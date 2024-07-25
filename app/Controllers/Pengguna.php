@@ -425,7 +425,6 @@ class Pengguna extends BaseController
             'details' => $userDetails,
             'idmembers' => $id
         ];
-        // dd($responseData);
         return view('pengguna/detail_pengguna', $data);
     }
     public function update_pengguna($id): string
@@ -456,6 +455,7 @@ class Pengguna extends BaseController
     }
     public function save_update_pengguna($id): \CodeIgniter\HTTP\RedirectResponse
     {
+        $role_user = $this->get_detail_pengguna($id);
         // Ambil data dari form
         $nama = $this->request->getPost('namaPengguna');
         $sex = $this->request->getPost('sexPengguna');
@@ -495,9 +495,16 @@ class Pengguna extends BaseController
                 ));
 
                 $response = curl_exec($curl);
-                $responseData = json_decode($response, true);
-                // dd($email, $roles, $divisions, $responseData);
                 curl_close($curl);
+
+                $responseData = json_decode($response, true);
+                if ($responseData['status'] === false) {
+                    session()->setFlashdata('error', $responseData['message']);
+                    // return redirect()->to('/pengguna/update-pengguna/' . $id);
+                } else {
+                    session()->setFlashdata('success', $responseData['message']);
+                }
+                return redirect()->to('/pengguna');
             }
         }
 
@@ -535,7 +542,6 @@ class Pengguna extends BaseController
             session()->setFlashdata('success', $responseData['message']);
         }
 
-        // dd(session()->getFlashdata('success'));
         return redirect()->to('/pengguna');
     }
     public function delete_user(): \CodeIgniter\HTTP\RedirectResponse
@@ -573,5 +579,42 @@ class Pengguna extends BaseController
         }
 
         return redirect()->to('/pengguna');
+    }
+
+    public function delete_user_role()
+    {
+        $id = $this->request->getPost('id');
+        $idUser = $this->request->getPost('idUser');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/deleteRole/' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
+        if ($responseData['status'] === true) {
+            session()->setFlashdata('success', $responseData['message']);
+        } else {
+            session()->setFlashdata('error', $responseData['message']);
+        }
+
+        return redirect()->to('/pengguna/update-pengguna/' . $idUser);
     }
 }

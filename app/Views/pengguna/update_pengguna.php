@@ -37,7 +37,7 @@
 
                                     <div class="mb-3">
                                         <label for="inputBirth" class="form-label">Tanggal Lahir</label>
-                                        <input type="date" name="birthPengguna" class="form-control" id="inputBirth" value="<?= $details['birthday'] ?>" required />
+                                        <input type="date" name="birthPengguna" class="form-control" id="inputBirth" value="<?= $details['birthday'] ?>" />
                                     </div>
 
                                     <div class="mb-3">
@@ -54,7 +54,7 @@
                                     </button>
                                 </div>
 
-                                <!-- /.card-header -->
+                                <!-- Tambah Divisi dan Posisi -->
                                 <div class="card-body role-division-pair" id="rolesDivisionsContainer">
                                     <?php foreach ($user_roles as $user_role) : ?>
                                         <div class="form-group role-division-pair">
@@ -76,8 +76,8 @@
                                                 </select>
                                             </div>
                                             <div>
-                                                <button type="button" onclick="removeRoleDivisionPair(this)" class="btn btn-danger align-items-center d-flex">
-                                                    <i class="nav-icon fas fa-trash fa-xs pr-2"></i>Hapus
+                                                <button class="btn btn-danger delete-user-btn" data-toggle="modal" data-target="#modal-lg">
+                                                    <i class="nav-icon fas fa-trash"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -128,7 +128,7 @@
                     </select>
                 </div>
                 <div>
-                    <button type="button" onclick="removeRoleDivisionPair(this)" class="btn btn-danger align-items-center d-flex">
+                    <button type="button" class="btn btn-danger align-items-center d-flex">
                         <i class="nav-icon fas fa-trash fa-xs pr-2"></i>Hapus
                     </button>
                 </div>

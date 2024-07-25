@@ -131,6 +131,32 @@
             </div>
             <!-- /.modal-content -->
         </div>
+        <!-- Modal HTML Delete Role User -->
+        <!-- Modal HTML Delete Role User -->
+        <div class="modal fade" id="modal-lg2">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Hapus Data</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah anda yakin akan menghapus <span id="userNameToDeleteRole" class="text-bold"></span> pada pengguna ini?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <form method="post" id="deleteForm2" action="">
+                            <input type="hidden" id="userIdToDeleteRole" name="id" value="">
+                            <input type="hidden" id="dataTypeRole" name="type" value="">
+                            <input type="hidden" id="userIdBefore" name="idUser" value="">
+                            <button type="submit" onclick="removeRoleDivisionPair(this)" class="btn btn-danger">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <!-- Bootstrap JS and dependencies -->
@@ -357,9 +383,10 @@
 
                 $('#modal-lg').on('show.bs.modal', function(event) {
                     var button = $(event.relatedTarget);
-                    userIdToDelete = button.closest('tr').data('user-id');
-                    userNameToDelete = button.closest('tr').data('user-name');
-                    dataType = button.closest('tr').data('type');
+
+                    var userIdToDelete = button.closest('tr').data('user-id');
+                    var userNameToDelete = button.closest('tr').data('user-name');
+                    var dataType = button.closest('tr').data('type');
 
                     var modal = $(this);
                     modal.find('#userNameToDelete').text(userNameToDelete);
@@ -381,8 +408,34 @@
                     }
                     modal.find('#deleteForm').attr('action', actionUrl);
                 });
+                $('#modal-lg2').on('show.bs.modal', function(event) {
+                    var button = $(event.relatedTarget);
+                    var userDataDiv = button.closest('button');
+
+                    var userIdToDelete = userDataDiv.data('user-id');
+                    var userNameToDelete = userDataDiv.data('user-name');
+                    var dataType = userDataDiv.data('type');
+                    var userIdBefore = userDataDiv.data('user-id-before');
+
+                    var modal = $(this);
+                    modal.find('#userNameToDeleteRole').text(userNameToDelete);
+                    modal.find('#userIdToDeleteRole').val(userIdToDelete);
+                    modal.find('#dataTypeRole').val(dataType);
+                    modal.find('#userIdBefore').val(userIdBefore);
+
+                    // Menyesuaikan URL action form
+                    let actionUrl;
+                    switch (dataType) {
+                        case 'UserRole':
+                            actionUrl = `<?php echo base_url('pengguna/delete-user-role'); ?>`;
+                            break;
+                    }
+                    modal.find('#deleteForm2').attr('action', actionUrl);
+                });
             });
         </script>
+        <!-- Passing ID dan Nama untuk delete user role-->
+
 
 
 </body>

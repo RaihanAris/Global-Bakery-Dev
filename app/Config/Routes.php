@@ -38,6 +38,7 @@ $routes->get('/pengguna/update-pengguna/(:segment)', 'Pengguna::update_pengguna/
 $routes->post('/pengguna/save', 'Pengguna::save_pengguna');
 $routes->post('/pengguna/update/(:segment)', 'Pengguna::save_update_pengguna/$1');
 $routes->post('/pengguna/delete-pengguna', 'Pengguna::delete_user');
+$routes->post('/pengguna/delete-user-role', 'Pengguna::delete_user_role');
 
 
 // RENCANA
