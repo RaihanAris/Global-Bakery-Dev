@@ -18,10 +18,10 @@ $routes->get('/dashboard', 'Dashboard::index');
 // PENGGUNA
 $routes->get('/pengguna', 'Pengguna::index');
 // PENGGUNA-POSISI
-$routes->post('/pengguna/tambah-posisi/save', 'Pengguna::save');
-$routes->get('/pengguna/tambah-posisi', 'Pengguna::tambah_posisi');
+// $routes->post('/pengguna/tambah-posisi/save', 'Pengguna::save');
+// $routes->get('/pengguna/tambah-posisi', 'Pengguna::tambah_posisi');
+// $routes->get('/pengguna/update-posisi/(:segment)', 'Pengguna::update_posisi/$1');
 $routes->get('/pengguna/detail-posisi/(:segment)', 'Pengguna::detail_posisi/$1');
-$routes->get('/pengguna/update-posisi/(:segment)', 'Pengguna::update_posisi/$1');
 
 // PENGGUNA-DIVISI
 $routes->get('/pengguna/tambah-divisi', 'Pengguna::tambah_divisi');
@@ -52,6 +52,7 @@ $routes->get('/projek/detail/(:segment)', 'Projek::detail/$1');
 $routes->get('/projek/tambah', 'Projek::tambah');
 $routes->post('/projek/create-project', 'Projek::create_project');
 $routes->get('/projek/update/(:segment)', 'Projek::update/$1');
+$routes->post('/projek/save-update-project/(:segment)', 'Projek::update_plan/$1');
 
 
 //PROFILE

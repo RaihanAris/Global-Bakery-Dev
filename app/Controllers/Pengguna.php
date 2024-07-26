@@ -24,6 +24,13 @@ class Pengguna extends BaseController
         $pengguna_list = $this->get_pengguna_list();
         $divisi_list = $this->get_divisi_list();
         $posisi_list = $this->get_posisi_list();
+
+        foreach ($pengguna_list as &$pengguna) {
+            $detail_pengguna = $this->get_detail_pengguna($pengguna['id']);
+            $pengguna['role'] = $detail_pengguna['role'];
+        }
+        // dd($pengguna_list);
+
         $data = [
             'title' => 'Pengguna | Admin',
             'menu' => 'pengguna',
@@ -63,55 +70,40 @@ class Pengguna extends BaseController
         $responseData = json_decode($response, true);
         return $responseData['data'];
     }
-    public function tambah_posisi(): string
+    public function detail_posisi($id): string
     {
-        $data = [
-            'title' => 'Tambah Posisi | Admin',
-            'menu' => 'pengguna',
-            'role' => $this->role,
-            'validation' => \Config\Services::validation()
-        ];
-        return view('pengguna/tambah_posisi', $data);
-    }
-    public function save()
-    {
-        // validasi input . kalau tidak tervalidasi
-        if (!$this->validate([
-            'nama-posisi' => [
-                'rules' => 'required|is_unique[posisi.nama]'
-            ]
-        ])) {
-            $validation = \Config\Services::validation(); //Pesan Kesalahan
-            return redirect()->to('/pengguna/tambah-posisi')->withInput()->with('validation', $validation);
-        }
+        $pengguna_list = $this->get_pengguna_list();
+        $posisi_list = $this->get_posisi_list();
 
-        // $slug = url_title($this->request->getVar('nama-posisi'), '-', true);
-        // $this->PosisiModel->save([
-        //     'nama' => $this->request->getVar('nama-posisi'),
-        //     'slug' => $slug
-        // ]);
-        session()->setFlashdata('pesan', 'Data Berhasil Ditambahkan.');
-        return redirect()->to('/pengguna');
-    }
-    public function detail_posisi($slug): string
-    {
+        // cek posisi
+        foreach ($posisi_list as $posisi) {
+            if ($posisi['id'] === $id) {
+                $posisi_name = $posisi['name'];
+            }
+        }
+        // membuat array yang berisi posisi khusus
+        foreach ($pengguna_list as $pengguna) {
+            $detail_pengguna = $this->get_detail_pengguna($pengguna['id']);
+            foreach ($detail_pengguna['role'] as $pengguna_role) {
+                if ($pengguna_role['roleId'] === $id) {
+                    $specific_role = array_merge($pengguna, [
+                        'role' => $pengguna_role
+                    ]);
+                    $posisi_pengguna[] = $specific_role;
+                }
+            }
+        }
+        // dd($posisi_pengguna);
+
         $data = [
             'title' => 'Detail Posisi | Admin',
             'menu' => 'pengguna',
             'role' => $this->role,
-            // 'posisi' => $this->PosisiModel->getPosisi($slug)
+            'members' => $posisi_pengguna,
+            'posisi' => $posisi_name
+
         ];
         return view('pengguna/detail_posisi', $data);
-    }
-    public function update_posisi($slug): string
-    {
-        $data = [
-            'title' => 'Update Posisi | Admin',
-            'menu' => 'pengguna',
-            'role' => $this->role,
-            // 'posisi' => $this->PosisiModel->getPosisi($slug)
-        ];
-        return view('pengguna/update_posisi', $data);
     }
     // DIVISI
     public function get_divisi_list(): array
@@ -445,17 +437,51 @@ class Pengguna extends BaseController
         $responseData = json_decode($response, true);
         return $responseData['data'];
     }
+    public function get_plan_pengguna($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/byUser?limit=10&offset=0&user=' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+        // foreach ($responseData['data'] as $project) {
+        //     if ($project['category'] === 'project') {
+        //         $list_project[] = $project;
+        //     }
+        // }
+        return ($responseData['data']);
+    }
     public function detail_pengguna($id): string
     {
         $userDetails = $this->get_detail_pengguna($id);
+        $userPlan = $this->get_plan_pengguna($id);
 
         $data = [
             'title' => 'Detail Pengguna | Admin',
             'menu' => 'pengguna',
             'role' => $this->role,
             'details' => $userDetails,
-            'idmembers' => $id
+            'idmembers' => $id,
+            'userPlan' => $userPlan
         ];
+
         return view('pengguna/detail_pengguna', $data);
     }
     public function update_pengguna($id): string

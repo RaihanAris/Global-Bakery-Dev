@@ -11,7 +11,7 @@
                     <div class="col-12">
                         <div class="card" style="border-top: 5px solid yellow;">
                             <div class="mx-4 mt-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
-                                <h1 class="text-bold">Detail Posisi <?php echo ($posisi['nama']); ?></h1>
+                                <h1 class="text-bold">Detail Posisi <?= $posisi; ?></h1>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -26,75 +26,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td data-label="No">1</td>
-                                            <td data-label="Nama">Raihan</td>
-                                            <td data-label="Posisi"><?php echo ($posisi['nama']); ?></td>
-                                            <td data-label="Divisi">IT</td>
-                                            <td data-label="Action" class="d-flex">
-                                                <div class="p-1">
-                                                    <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna" class="btn btn-primary">
-                                                        <i class="nav-icon fas fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <a href="<?php echo (base_url()) ?>pengguna/update-pengguna" class="btn btn-warning">
-                                                        <i class="nav-icon fas fa-pen"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
-                                                        <i class="nav-icon fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td data-label="No">2</td>
-                                            <td data-label="Nama">Nurul Anwar</td>
-                                            <td data-label="Posisi"><?php echo ($posisi['nama']); ?></td>
-                                            <td data-label="Divisi">Marketing</td>
-                                            <td data-label="Action" class="d-flex">
-                                                <div class="p-1">
-                                                    <a href="#" class="btn btn-primary">
-                                                        <i class="nav-icon fas fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <a href="#" class="btn btn-warning">
-                                                        <i class="nav-icon fas fa-pen"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
-                                                        <i class="nav-icon fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td data-label="No">3</td>
-                                            <td data-label="Nama">Bagus Rahul</td>
-                                            <td data-label="Posisi"><?php echo ($posisi['nama']); ?></td>
-                                            <td data-label="Divisi">Marketing</td>
-                                            <td data-label="Action" class="d-flex">
-                                                <div class="p-1">
-                                                    <a href="#" class="btn btn-primary">
-                                                        <i class="nav-icon fas fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <a href="#" class="btn btn-warning">
-                                                        <i class="nav-icon fas fa-pen"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
-                                                        <i class="nav-icon fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <?php $i = 1; ?>
+                                        <?php foreach ($members as $member) : ?>
+                                            <tr>
+                                                <td data-label="No"><?= $i++; ?></td>
+                                                <td data-label="Nama"><?= $member['name'] ?></td>
+                                                <td data-label="Posisi"><?= $member['role']['role'] ?></td>
+                                                <td data-label="Divisi"><?= $member['role']['division'] ?></td>
+                                                <td data-label="Action" class="d-flex">
+                                                    <div class="p-1">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna" class="btn btn-primary">
+                                                            <i class="nav-icon fas fa-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-1">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/update-pengguna" class="btn btn-warning">
+                                                            <i class="nav-icon fas fa-pen"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-1">
+                                                        <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
+                                                            <i class="nav-icon fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

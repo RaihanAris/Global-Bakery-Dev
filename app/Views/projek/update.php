@@ -16,33 +16,30 @@
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form>
+                                <form method="post" action="<?php echo (base_url()) ?>projek/save-update-project/<?= $details['id'] ?>">
                                     <div class="mb-3">
                                         <label for="exampleInputNamaProjek" class="form-label">Nama Projek</label>
-                                        <input type="text" class="form-control" id="exampleInputNamaProjek" aria-describedby="emailHelp" value="Pembukaan Outlet Baru" required />
+                                        <input type="text" name="title" class="form-control" id="exampleInputNamaProjek" value="<?= $details['title'] ?>" aria-describedby="emailHelp" required />
                                     </div>
                                     <div class="mb-3">
-                                        <label for="inputDetail" class="form-label">Detail</label>
-                                        <textarea class="form-control" id="inputDetail" rows="3" required>
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit saepe sequi dolor reprehenderit, aut rem sed nostrum, dolorem similique est provident minima quibusdam animi, omnis iste blanditiis unde! Sequi, mollitia! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero omnis impedit sequi quisquam. Incidunt error minus impedit quam? Eaque voluptatum facilis inventore itaque quas. Earum expedita dolores quaerat necessitatibus praesentium nihil.</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="inputBudget" class="form-label">Estimasi Budget</label>
-                                        <input type="number" class="form-control" id="inputBudget" value="23000000" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="inputPengeluaran" class="form-label">Estimasi Pengeluaran</label>
-                                        <input type="number" class="form-control" id="inputPengeluaran" value="2000000" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="inputDurasi" class="form-label">Estimasi Durasi Projek</label>
-                                        <input type="number" class="form-control" id="inputDurasi" value="20" required />
-                                    </div>
+                                        <label for="inputDetail" class="form-label">Deskripsi</label>
+                                        <textarea class="form-control" name="description" id="inputDetail" rows="3" required>
+<?= $details['description'] ?></textarea>
+                                        <div class="mb-3">
+                                            <label for="progress" class="form-label">Progress (%)</label>
+                                            <input type="number" name="progress" class="form-control" id="progress" value="<?= $details['progress'] ?>" min="0" max="100" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="status" class="form-label">Status</label>
+                                            <input type="text" name="status" class="form-control" id="status" value="<?= $details['status'] ?>" required />
+                                        </div>
+                                        <input type="hidden" name="category" class="form-control" id="inputPengeluaran" value="project" required />
 
-                                    <button type="submit" class="btn btn-success align-items-center d-flex">
-                                        <i class="nav-icon fas fa-pen fa-xs pr-2"></i>Update
-                                        Projek
-                                    </button>
+
+                                        <button type="submit" class="btn btn-success align-items-center d-flex">
+                                            <i class="nav-icon fas fa-pen fa-xs pr-2"></i>Update
+                                            Projek
+                                        </button>
                                 </form>
                             </div>
                         </div>

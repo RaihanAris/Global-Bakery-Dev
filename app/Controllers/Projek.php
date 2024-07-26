@@ -170,12 +170,68 @@ class Projek extends BaseController
 
         return redirect()->to('/projek');
     }
-    public function update(): string
+    public function update_plan($id)
     {
+        $title = $this->request->getPost('title');
+        $description = $this->request->getPost('description');
+        $status = $this->request->getPost('status');
+        $progress = $this->request->getPost('progress');
+        $category = $this->request->getPost('category');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/update/' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                "title" => $title,
+                "description" => $description,
+                "status" => $status,
+                "progress" => $progress,
+                "category" => $category,
+            )),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+        dd($responseData);
+        if ($responseData['status'] === true) {
+            session()->setFlashdata('success', $responseData['message']);
+        } else {
+            session()->setFlashdata('error', $responseData['message']);
+        }
+
+        return redirect()->to('/projek');
+    }
+    public function update($id): string
+    {
+        $users = $this->get_pengguna_list();
+        $projects = $this->get_plan_list();
+
+        foreach ($projects as $project) {
+            if ($project['id'] === $id) {
+                $details = $project;
+            }
+        }
         $data = [
             'title' => 'Projek | Admin',
             'menu' => 'projek',
-            'role' => $this->role
+            'role' => $this->role,
+            'details' => $details,
         ];
         return view('projek/update', $data);
     }

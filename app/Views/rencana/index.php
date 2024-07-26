@@ -36,58 +36,61 @@
                                             <th>Nama Pengguna</th>
                                             <th>Detail Rencana</th>
                                             <th>Tanggal</th>
-                                            <th>Posisi</th>
-                                            <th>Divisi</th>
+                                            <th>Ketegori</th>
+                                            <th>Role</th>
                                             <th>Progress</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td data-label="No" class="align-middle">1</td>
-                                            <td data-label="Nama Pengguna" class="align-middle">Raihan</td>
-                                            <td data-label="Detail Rencana" class="align-middle">
-                                                <!-- card -->
-                                                <div class="card bg-gradient-warning collapsed-card mb-1">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title text-bold">
-                                                            <li>Follow Up Pembayaran Pajak</li>
-                                                        </h3>
+                                        <?php $i = 1; ?>
+                                        <?php foreach ($user_plan_list as $user_plan) : ?>
+                                            <tr>
+                                                <td data-label="No" class="align-middle"><?= $i++ ?></td>
+                                                <td data-label="Nama Pengguna" class="align-middle"><?= $user_plan['user_name'] ?></td>
+                                                <td data-label="Detail Rencana" class="align-middle">
+                                                    <!-- card -->
+                                                    <div class="card bg-gradient-warning collapsed-card mb-1">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title text-bold">
+                                                                <li><?= $user_plan['title'] ?></li>
+                                                            </h3>
 
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                <i class="fas fa-plus"></i>
-                                                            </button>
+                                                            <div class="card-tools">
+                                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                            <!-- /.card-tools -->
                                                         </div>
-                                                        <!-- /.card-tools -->
+                                                        <!-- /.card-header -->
+                                                        <div class="card-body">
+                                                            <p><?= $user_plan['description'] ?></p>
+                                                        </div>
+                                                        <!-- /.card-body -->
                                                     </div>
-                                                    <!-- /.card-header -->
-                                                    <div class="card-body">
-                                                        <li>Ke kantor Pajak</li>
-                                                        <li>Print dokumen Pajak</li>
-                                                        <li>Ambil uang di ATM</li>
+                                                    <!-- /.card -->
+                                                </td>
+                                                <td data-label="Tanggal" class="align-middle">
+                                                    <?= $user_plan['created_at'] ?>
+                                                </td>
+                                                <td data-label="Kategori" class="align-middle">
+                                                    <?= $user_plan['category'] ?>
+                                                </td>
+                                                <td data-label="Posisi" class="align-middle">
+                                                    <?php foreach ($user_plan['role'] as $role_division) : ?>
+                                                        <span class="badge text-bg-warning text-sm"><?= $role_division['role'] ?> - <?= $role_division['division'] ?></span>
+                                                    <?php endforeach; ?>
+                                                </td>
+                                                <td data-label="Progress" class="align-middle">
+                                                    <div class="progress-rencana">
+                                                        <div class="progress progress-xs progress-striped active">
+                                                            <div class="progress-bar bg-primary" style="width: <?= $user_plan['progress'] ?>%"></div>
+                                                        </div>
+                                                        <span class="badge bg-success"><?= $user_plan['progress'] ?>%</span>
                                                     </div>
-                                                    <!-- /.card-body -->
-                                                </div>
-                                                <!-- /.card -->
-                                            </td>
-                                            <td data-label="Tanggal" class="align-middle">
-                                                28-06-2024
-                                            </td>
-                                            <td data-label="Posisi" class="align-middle">
-                                                <span class="badge text-bg-warning">Manager</span>
-                                            </td>
-                                            <td data-label="Divisi" class="align-middle">
-                                                <span class="badge text-bg-warning">IT</span>
-                                            </td>
-                                            <td data-label="Progress" class="align-middle">
-                                                <div class="progress-rencana">
-                                                    <div class="progress progress-xs progress-striped active">
-                                                        <div class="progress-bar bg-primary" style="width: 70%"></div>
-                                                    </div>
-                                                    <span class="badge bg-success">70%</span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

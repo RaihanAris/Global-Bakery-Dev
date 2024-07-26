@@ -13,10 +13,6 @@
                         <div class="card" style="border-top: 5px solid yellow;">
                             <div class="mx-4 mt-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
                                 <h1 class="text-bold">Posisi</h1>
-                                <a href="pengguna/tambah-posisi" class="btn btn-success align-items-center d-flex">
-                                    <i class="nav-icon fas fa-plus fa-xs pr-2"></i>
-                                    Posisi
-                                </a>
                             </div>
 
                             <!-- /.card-header -->
@@ -39,19 +35,9 @@
                                                 <td data-label="Deskripsi"><?= $role['description'] ?></td>
                                                 <td data-label="Action" class="d-flex">
                                                     <div class="p-1">
-                                                        <a href="pengguna/detail-posisi/detail" class="btn btn-primary">
+                                                        <a href="pengguna/detail-posisi/<?= $role['id'] ?>" class="btn btn-primary">
                                                             <i class="nav-icon fas fa-eye"></i>
                                                         </a>
-                                                    </div>
-                                                    <div class="p-1">
-                                                        <a href="pengguna/update-posisi/update" class="btn btn-warning">
-                                                            <i class="nav-icon fas fa-pen"></i>
-                                                        </a>
-                                                    </div>
-                                                    <div class="p-1">
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
-                                                            <i class="nav-icon fas fa-trash"></i>
-                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -127,8 +113,7 @@
                                         <tr>
                                             <th style="width: 10px">No</th>
                                             <th>Nama</th>
-                                            <th>Posisi</th>
-                                            <th>Divisi</th>
+                                            <th>Role</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -138,8 +123,11 @@
                                             <tr data-user-id="<?= $member['id'] ?>" data-user-name=" Pengguna : <?= $member['name'] ?>" data-type="Pengguna">
                                                 <td data-label="No"><?= ($i++); ?></td>
                                                 <td data-label="Nama"><?= $member['name'] ?></td>
-                                                <td data-label="Posisi">Staff</td>
-                                                <td data-label="Divisi">IT</td>
+                                                <td data-label="Role">
+                                                    <?php foreach ($member['role'] as $role_division) : ?>
+                                                        <span class="badge text-bg-warning text-sm"><?= $role_division['role'] ?> - <?= $role_division['division'] ?></span><br>
+                                                    <?php endforeach; ?>
+                                                </td>
                                                 <td data-label="Action" class="d-flex">
                                                     <div class="p-1">
                                                         <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna/<?= $member['id'] ?>" class="btn btn-primary">
