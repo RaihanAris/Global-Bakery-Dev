@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Posisi;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
+use SebastianBergmann\Type\TrueType;
 
 class Pengguna extends BaseController
 {
@@ -191,17 +192,47 @@ class Pengguna extends BaseController
         }
         return redirect()->to('/pengguna');
     }
+    public function get_divisi_detail($id)
+    {
+        $curl = curl_init();
 
-    public function detail_divisi(): string
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/user?limit=10&offset=0&divisionId=' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
+        return $responseData['data'];
+    }
+
+    public function detail_divisi($id): string
     {
         $divisi_list = $this->get_divisi_list();
+        $divisi_detail = $this->get_divisi_detail($id);
 
         $data = [
             'title' => 'Detail Divisi | Admin',
             'menu' => 'pengguna',
             'role' => $this->role,
-            'divisi_list' => $divisi_list
+            'divisi_list' => $divisi_list,
+            'divisi_detail' => $divisi_detail
         ];
+
         return view('pengguna/detail_divisi', $data);
     }
     public function update_divisi($id): string
@@ -453,16 +484,44 @@ class Pengguna extends BaseController
         // dd($data['role'], $data['details'], $data['user_role'],);
         return view('pengguna/update_pengguna', $data);
     }
+    public function save_role_divisi($email, $roles, $divisions)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/createRole',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                "user" => $email,
+                "role" => $roles,
+                "division" => $divisions
+            )),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
     public function save_update_pengguna($id): \CodeIgniter\HTTP\RedirectResponse
     {
         $role_user = $this->get_detail_pengguna($id);
         // Ambil data dari form
         $nama = $this->request->getPost('namaPengguna');
-        $sex = $this->request->getPost('sexPengguna');
         $email = $this->request->getPost('emailPengguna');
+        $sex = $this->request->getPost('sexPengguna');
         $birth = $this->request->getPost('birthPengguna');
         $foto = $this->request->getPost('fotoPengguna');
-
         // Ambil roles dan divisions dari form
         $roles = $this->request->getPost('roles');
         $divisions = $this->request->getPost('divisions');
@@ -470,41 +529,17 @@ class Pengguna extends BaseController
         // Buat array roleDivisionPairs
         if (is_array($roles) && is_array($divisions)) {
             for ($i = 0; $i < count($roles); $i++) {
-                $curl = curl_init();
-
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/createRole',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS => json_encode(array(
-                        "user" => $email,
-                        "role" => $roles[$i],
-                        "division" => $divisions[$i]
-                    )),
-                    CURLOPT_HTTPHEADER => array(
-                        'Content-Type: application/json',
-                        'Authorization: Bearer ' . $this->token
-                    ),
-                    CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST => false,
-                ));
-
-                $response = curl_exec($curl);
-                curl_close($curl);
-
-                $responseData = json_decode($response, true);
-                if ($responseData['status'] === false) {
-                    session()->setFlashdata('error', $responseData['message']);
-                    // return redirect()->to('/pengguna/update-pengguna/' . $id);
-                } else {
-                    session()->setFlashdata('success', $responseData['message']);
+                $roleExists = false;
+                foreach ($role_user['role'] as $existingRole) {
+                    if ($roles[$i] === $existingRole['role'] && $divisions[$i] === $existingRole['divisionId']) {
+                        $roleExists = True;
+                        $this->save_role_divisi($email, $roles[$i], $divisions[$i]);
+                        break;
+                    }
                 }
-                return redirect()->to('/pengguna');
+                if (!$roleExists) {
+                    $this->save_role_divisi($email, $roles[$i], $divisions[$i]);
+                }
             }
         }
 
@@ -522,7 +557,8 @@ class Pengguna extends BaseController
             CURLOPT_POSTFIELDS => json_encode(array(
                 'name' => $nama,
                 'sex' => $sex,
-                'birthday' => $birth
+                'birthday' => $birth,
+                'picture' => $foto,
             )),
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
@@ -542,7 +578,7 @@ class Pengguna extends BaseController
             session()->setFlashdata('success', $responseData['message']);
         }
 
-        return redirect()->to('/pengguna');
+        return redirect()->to('/pengguna/update-pengguna/' . $id);
     }
     public function delete_user(): \CodeIgniter\HTTP\RedirectResponse
     {

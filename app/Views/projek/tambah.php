@@ -16,28 +16,22 @@
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form>
+                                <form method="post" action="<?php echo (base_url()) ?>projek/create-project">
                                     <div class="mb-3">
                                         <label for="exampleInputNamaProjek" class="form-label">Nama Projek</label>
-                                        <input type="text" class="form-control" id="exampleInputNamaProjek" aria-describedby="emailHelp" required />
+                                        <input type="text" name="name" class="form-control" id="exampleInputNamaProjek" aria-describedby="emailHelp" required />
                                     </div>
                                     <div class="mb-3">
-                                        <label for="inputDetail" class="form-label">Detail</label>
-                                        <textarea class="form-control" id="inputDetail" rows="3" required>
+                                        <label for="inputDetail" class="form-label">Deskripsi</label>
+                                        <textarea class="form-control" name="description" id="inputDetail" rows="3" required>
 </textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="inputBudget" class="form-label">Estimasi Budget</label>
-                                        <input type="number" class="form-control" id="inputBudget" required />
+                                        <label for="progress" class="form-label">Progress (%)</label>
+                                        <input type="number" name="progress" class="form-control" id="progress" value="0" min="0" max="100" required />
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="inputPengeluaran" class="form-label">Estimasi Pengeluaran</label>
-                                        <input type="number" class="form-control" id="inputPengeluaran" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="inputDurasi" class="form-label">Estimasi Durasi Projek</label>
-                                        <input type="number" class="form-control" id="inputDurasi" required />
-                                    </div>
+                                    <input type="hidden" name="category" class="form-control" id="inputPengeluaran" value="project" required />
+
 
                                     <button type="submit" class="btn btn-success align-items-center d-flex">
                                         <i class="nav-icon fas fa-pen fa-xs pr-2"></i>Tambah

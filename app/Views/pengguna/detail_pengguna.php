@@ -17,7 +17,7 @@
                                         <i class="nav-icon fas fa-pen fa-xs pr-2"></i>
                                         Update Pengguna
                                     </a>
-                                    <button type="button" class="btn btn-danger align-items-center d-flex" data-toggle="modal" data-target="#modal-lg">
+                                    <button type="button" class="btn btn-danger align-items-center d-flex" data-toggle="modal" data-target="#modal-lg" data-tr-selector="tr[data-user-id='<?= $details['id'] ?>']">
                                         <i class="nav-icon fas fa-trash fa-xs pr-2"></i>
                                         Hapus Pengguna
                                     </button>

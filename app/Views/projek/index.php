@@ -25,48 +25,51 @@
                                         <tr>
                                             <th style="width: 10px">No</th>
                                             <th>Nama Projek</th>
-                                            <th>Jumlah Divisi</th>
+                                            <th>Status</th>
                                             <th>Tanggal Mulai</th>
                                             <th>Progress</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td data-label="No" class="align-middle">1</td>
-                                            <td data-label="Nama Projek" class="align-middle">Pembukaan Outlet Baru</td>
-                                            <td data-label="Jumlah Divisi" class="align-middle">
-                                                2
-                                            </td>
-                                            <td data-label="Tanggal Mulai" class="align-middle">
-                                                28-06-2024
-                                            </td>
-                                            <td data-label="Progress" class="align-middle">
-                                                <div class="progress-rencana">
-                                                    <div class="progress progress-xs progress-striped active">
-                                                        <div class="progress-bar bg-primary" style="width: 10%"></div>
+                                        <?php $i = 1; ?>
+                                        <?php foreach ($projects as $project) : ?>
+                                            <tr>
+                                                <td data-label="No" class="align-middle"><?= $i++ ?></td>
+                                                <td data-label="Nama Projek" class="align-middle"><?= $project['title'] ?></td>
+                                                <td data-label="Status" class="align-middle">
+                                                    <?= $project['status'] ?>
+                                                </td>
+                                                <td data-label="Tanggal Mulai" class="align-middle">
+                                                    <?= $project['created_at'] ?>
+                                                </td>
+                                                <td data-label="Progress" class="align-middle">
+                                                    <div class="progress-rencana">
+                                                        <div class="progress progress-xs progress-striped active">
+                                                            <div class="progress-bar bg-primary" style="width: <?= $project['progress'] ?>%"></div>
+                                                        </div>
+                                                        <span class="badge bg-success"><?= $project['progress'] ?>%</span>
                                                     </div>
-                                                    <span class="badge bg-success">10%</span>
-                                                </div>
-                                            </td>
-                                            <td data-label="Action" class="align-middle d-flex">
-                                                <div class="p-1">
-                                                    <a href="<?php echo (base_url()) ?>projek/detail" class="btn btn-primary">
-                                                        <i class="nav-icon fas fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <a href="<?php echo (base_url()) ?>projek/update" class="btn btn-warning">
-                                                        <i class="nav-icon fas fa-pen"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
-                                                        <i class="nav-icon fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td data-label="Action" class="align-middle d-flex">
+                                                    <div class="p-1">
+                                                        <a href="<?php echo (base_url()) ?>projek/detail/<?= $project['id'] ?>" class="btn btn-primary">
+                                                            <i class="nav-icon fas fa-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-1">
+                                                        <a href="<?php echo (base_url()) ?>projek/update/<?= $project['id'] ?>" class="btn btn-warning">
+                                                            <i class="nav-icon fas fa-pen"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-1">
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
+                                                            <i class="nav-icon fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

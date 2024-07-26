@@ -26,29 +26,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td data-label="No">1</td>
-                                            <td data-label="Nama">Raihan</td>
-                                            <td data-label="Posisi">Staff</td>
-                                            <td data-label="Divisi">IT</td>
-                                            <td data-label="Action" class="d-flex">
-                                                <div class="p-1">
-                                                    <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna" class="btn btn-primary">
-                                                        <i class="nav-icon fas fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <a href="<?php echo (base_url()) ?>pengguna/update-pengguna" class="btn btn-warning">
-                                                        <i class="nav-icon fas fa-pen"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="p-1">
-                                                    <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
-                                                        <i class="nav-icon fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <?php $i = 1; ?>
+                                        <?php foreach ($divisi_detail as $divisi_list) : ?>
+                                            <tr>
+                                                <td data-label="No"><?= $i++; ?></td>
+                                                <td data-label="Nama"><?= $divisi_list['name'] ?></td>
+                                                <td data-label="Posisi"><?= $divisi_list['role'] ?></td>
+                                                <td data-label="Divisi"><?= $divisi_list['division'] ?></td>
+                                                <td data-label="Action" class="d-flex">
+                                                    <div class="p-1">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna" class="btn btn-primary">
+                                                            <i class="nav-icon fas fa-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-1">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/update-pengguna" class="btn btn-warning">
+                                                            <i class="nav-icon fas fa-pen"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="p-1">
+                                                        <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
+                                                            <i class="nav-icon fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

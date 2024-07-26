@@ -8,6 +8,8 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
 
 /**
  * Class BaseController
@@ -55,5 +57,32 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
         session();
+    }
+
+    protected function checkToken()
+    {
+        // Ambil token dari header
+        $token = $this->request->getHeaderLine('Authorization');
+        $token = str_replace('Bearer ', '', $token); // Jika menggunakan Bearer token
+
+        // Panggil metode isTokenValid untuk memeriksa validitas token
+        if (!$this->isTokenValid($token)) {
+            return redirect()->to('/error/token-invalid');
+        }
+    }
+    private function isTokenValid($token)
+    {
+        $key = 'f4dIvVKDEuox03miVMr3us42lNCoA3XXg8xqFoEMTEFzVlWOMSbmGApyRXtN5x0B';
+        try {
+            $decoded = JWT::decode($token, new Key($key, 'HS256'));
+            // Token valid, lanjutkan dengan logika Anda
+            return true;
+        } catch (\Firebase\JWT\ExpiredException $e) {
+            // Token expired
+            return false;
+        } catch (\Exception $e) {
+            // Token invalid
+            return false;
+        }
     }
 }

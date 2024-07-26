@@ -22,10 +22,7 @@
                                         <input type="text" name="namaPengguna" class="form-control" id="exampleInputNama" aria-describedby="emailHelp" value="<?= $details['name'] ?>" required />
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label for="inputEmail" class="form-label">Email</label>
-                                        <input type="email" name="emailPengguna" class="form-control" id="inputEmail" value="<?= $details['email'] ?>" required />
-                                    </div>
+                                    <input type="hidden" name="emailPengguna" class="form-control" id="inputEmail" value="<?= $details['email'] ?>" />
 
                                     <div class="form-group">
                                         <label>Jenis Kelamin</label>
@@ -71,13 +68,13 @@
                                                 <label>Divisi</label>
                                                 <select class="form-control select2" name="divisions[]">
                                                     <?php foreach ($divisions as $division) : ?>
-                                                        <option value="<?= $division['id'] ?>" <?= $user_role['division'] == $division['code'] ? 'selected' : '' ?>><?= $division['name'] ?></option>
+                                                        <option value="<?= $division['id'] ?>" <?= $user_role['divisionId'] == $division['id'] ? 'selected' : '' ?>><?= $division['name'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
                                             <div>
-                                                <button class="btn btn-danger delete-user-btn" data-toggle="modal" data-target="#modal-lg">
-                                                    <i class="nav-icon fas fa-trash"></i>
+                                                <button type="button" class="btn btn-danger delete-user-btn" data-toggle="modal" data-target="#modal-lg2" data-user-id="<?= $user_role['id'] ?>" data-user-name="Role : <?= $user_role['role'] ?>" data-type="UserRole" data-user-id-before="<?= $details['id'] ?>">
+                                                    <i class="nav-icon fas fa-trash"></i> Hapus
                                                 </button>
                                             </div>
                                         </div>
@@ -108,7 +105,7 @@
     function addRoleDivisionPair() {
         var container = document.getElementById('rolesDivisionsContainer');
         var pairDiv = document.createElement('div');
-        pairDiv.className = 'form-group role-division-pair';
+        pairDiv.className = 'form-group role-division-pairNew';
         pairDiv.innerHTML = `
                 <div class="form-group ">
                     <label>Posisi</label>
@@ -128,7 +125,7 @@
                     </select>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-danger align-items-center d-flex">
+                    <button type="button" class="btn btn-danger align-items-center d-flex" onclick="removeRoleDivisionPair(this)">
                         <i class="nav-icon fas fa-trash fa-xs pr-2"></i>Hapus
                     </button>
                 </div>
@@ -138,7 +135,7 @@
     }
 
     function removeRoleDivisionPair(button) {
-        var pairDiv = button.closest('.role-division-pair');
+        var pairDiv = button.closest('.role-division-pairNew');
         pairDiv.remove();
     }
 </script>

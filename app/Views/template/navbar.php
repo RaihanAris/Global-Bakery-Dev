@@ -388,6 +388,15 @@
                     var userNameToDelete = button.closest('tr').data('user-name');
                     var dataType = button.closest('tr').data('type');
 
+                    if (!userIdToDelete) {
+                        var trSelector = button.data('tr-selector');
+                        var tr = $(trSelector); // Menemukan elemen tr berdasarkan selector
+
+                        var userIdToDelete = tr.data('user-id');
+                        var userNameToDelete = tr.data('user-name');
+                        var dataType = tr.data('type');
+                    }
+
                     var modal = $(this);
                     modal.find('#userNameToDelete').text(userNameToDelete);
                     modal.find('#userIdToDelete').val(userIdToDelete);
@@ -416,6 +425,13 @@
                     var userNameToDelete = userDataDiv.data('user-name');
                     var dataType = userDataDiv.data('type');
                     var userIdBefore = userDataDiv.data('user-id-before');
+
+
+                    console.log("Modal-lg Data:");
+                    console.log("User ID: ", userIdToDelete);
+                    console.log("User Name: ", userNameToDelete);
+                    console.log("Data Type: ", dataType);
+                    console.log("Data Type: ", userIdBefore);
 
                     var modal = $(this);
                     modal.find('#userNameToDeleteRole').text(userNameToDelete);

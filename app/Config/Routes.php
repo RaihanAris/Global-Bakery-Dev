@@ -48,9 +48,10 @@ $routes->get('/rencana/history/detail', 'Rencana::detail');
 
 // PROJEK
 $routes->get('/projek', 'Projek::index');
-$routes->get('/projek/detail', 'Projek::detail');
+$routes->get('/projek/detail/(:segment)', 'Projek::detail/$1');
 $routes->get('/projek/tambah', 'Projek::tambah');
-$routes->get('/projek/update', 'Projek::update');
+$routes->post('/projek/create-project', 'Projek::create_project');
+$routes->get('/projek/update/(:segment)', 'Projek::update/$1');
 
 
 //PROFILE

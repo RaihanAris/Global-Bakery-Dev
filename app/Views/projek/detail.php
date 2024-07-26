@@ -12,12 +12,40 @@
                         <!-- /.card -->
                         <div class="card" style="border-top: 5px solid yellow;">
                             <div class="mx-4 mt-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
-                                <h1 class="text-bold">Pembukaan Outlet Baru</h1>
+                                <h1 class="text-bold"><?= $details['title'] ?></h1>
                             </div>
                             <p class="mt-3 px-4">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit saepe sequi dolor reprehenderit, aut rem sed nostrum, dolorem similique est provident minima quibusdam animi, omnis iste blanditiis unde! Sequi, mollitia!
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero omnis impedit sequi quisquam. Incidunt error minus impedit quam? Eaque voluptatum facilis inventore itaque quas. Earum expedita dolores quaerat necessitatibus praesentium nihil.
+                                <?= $details['description'] ?>
                             </p>
+                            <table class="table table-bordered">
+                                <thead style="font-size: 18px;">
+                                    <tr>
+                                        <th>Dibuat Oleh</th>
+                                        <th>Kategori</th>
+                                        <th>Mulai</th>
+                                        <th>Edit Terakhir</th>
+                                        <th>Status</th>
+                                        <th>Progress</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 18px;">
+                                    <tr>
+                                        <td data-label="Dibuat Oleh" class="align-middle"> <?= $creator ?></td>
+                                        <td data-label="Kategori" class="align-middle"><?= $details['category'] ?></td>
+                                        <td data-label="Mulai" class="align-middle"> <?= $details['created_at'] ?></td>
+                                        <td data-label="Edit Terakhir" class="align-middle"> <?= $details['updated_at'] ?></td>
+                                        <td data-label="Status" class="align-middle"> <?= $details['status'] ?></td>
+                                        <td data-label="Progress" class="align-middle" class="align-middle">
+                                            <div class="progress-rencana">
+                                                <div class="progress progress-xs progress-striped active">
+                                                    <div class="progress-bar bg-primary" style="width: <?= $details['progress'] ?>%"></div>
+                                                </div>
+                                                <span class="badge bg-success"><?= $details['progress'] ?>%</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <!-- /.card-header -->
 
                         </div>

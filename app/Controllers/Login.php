@@ -9,6 +9,13 @@ use Firebase\JWT\JWT;
 
 class Login extends BaseController
 {
+    protected $token;
+
+    public function __construct()
+    {
+        // Set Token
+        $this->token = session()->get('userToken');
+    }
     public function login()
     {
         return view('login/login');
@@ -109,6 +116,7 @@ class Login extends BaseController
             return redirect()->back()->with('error', 'Gagal Login, Silahkan Coba Lagi.');
         }
     }
+
     public function forgot()
     {
         return view('login/forgot');
