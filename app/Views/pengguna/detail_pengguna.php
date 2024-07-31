@@ -39,7 +39,12 @@
                                     </thead>
                                     <tbody>
                                         <tr data-user-id="<?= $details['id'] ?>" data-user-name=" Pengguna : <?= $details['name'] ?>" data-type="Pengguna">
-                                            <td data-label="Nama"><?= $details['name']; ?></td>
+                                            <td data-label="Nama">
+                                                <?php if ($details['picture'] != null) : ?>
+                                                    <img src="<?= $details['picture'] ?>" class="rounded mx-auto d-block" alt="Foto <?= $details['name'] ?>">
+                                                <?php endif; ?>
+                                                <?= $details['name']; ?>
+                                            </td>
                                             <td data-label="Posisi">
                                                 <?php foreach ($details['role'] as $role) : ?>
                                                     <span class="badge text-bg-warning">
@@ -93,7 +98,7 @@
                                         <?php foreach ($userPlan as $plan) : ?>
                                             <tr>
                                                 <td data-label="No" class="align-middle"><?= $i++ ?></td>
-                                                <td data-label="Nama Pengguna" class="align-middle"><?= $details['name'] ?></td>
+                                                <td data-label="Nama Pengguna" class="align-middle"> <?= $details['name'] ?></td>
                                                 <td data-label="Detail Rencana" class="align-middle">
                                                     <!-- card -->
                                                     <div class="card bg-gradient-warning collapsed-card mb-1">

@@ -397,6 +397,12 @@
                         var dataType = tr.data('type');
                     }
 
+                    // Menampilkan data di console untuk debugging
+                    console.log("Modal-lg Data:");
+                    console.log("User ID: ", userIdToDelete);
+                    console.log("User Name: ", userNameToDelete);
+                    console.log("Data Type: ", dataType);
+
                     var modal = $(this);
                     modal.find('#userNameToDelete').text(userNameToDelete);
                     modal.find('#userIdToDelete').val(userIdToDelete);
@@ -425,13 +431,6 @@
                     var userNameToDelete = userDataDiv.data('user-name');
                     var dataType = userDataDiv.data('type');
                     var userIdBefore = userDataDiv.data('user-id-before');
-
-
-                    console.log("Modal-lg Data:");
-                    console.log("User ID: ", userIdToDelete);
-                    console.log("User Name: ", userNameToDelete);
-                    console.log("Data Type: ", dataType);
-                    console.log("Data Type: ", userIdBefore);
 
                     var modal = $(this);
                     modal.find('#userNameToDeleteRole').text(userNameToDelete);

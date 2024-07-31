@@ -28,24 +28,24 @@
                                     <tbody>
                                         <?php $i = 1; ?>
                                         <?php foreach ($divisi_detail as $divisi_list) : ?>
-                                            <tr>
+                                            <tr data-user-id="<?= $divisi_list['id'] ?>" data-user-name=" Pengguna : <?= $divisi_list['name'] ?>" data-type="Pengguna">
                                                 <td data-label="No"><?= $i++; ?></td>
                                                 <td data-label="Nama"><?= $divisi_list['name'] ?></td>
                                                 <td data-label="Posisi"><?= $divisi_list['role'] ?></td>
                                                 <td data-label="Divisi"><?= $divisi_list['division'] ?></td>
                                                 <td data-label="Action" class="d-flex">
                                                     <div class="p-1">
-                                                        <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna" class="btn btn-primary">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna/<?= $divisi_list['id'] ?>" class="btn btn-primary">
                                                             <i class="nav-icon fas fa-eye"></i>
                                                         </a>
                                                     </div>
                                                     <div class="p-1">
-                                                        <a href="<?php echo (base_url()) ?>pengguna/update-pengguna" class="btn btn-warning">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/update-pengguna/<?= $divisi_list['id'] ?>" class="btn btn-warning">
                                                             <i class="nav-icon fas fa-pen"></i>
                                                         </a>
                                                     </div>
                                                     <div class="p-1">
-                                                        <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
+                                                        <button class="btn btn-danger delete-user-btn" data-toggle="modal" data-target="#modal-lg">
                                                             <i class="nav-icon fas fa-trash"></i>
                                                         </button>
                                                     </div>

@@ -53,7 +53,7 @@
                         <!-- Divisi -->
                         <div class="card" style="border-top: 5px solid yellow;">
                             <div class="mx-4 mt-3 pb-2 border-bottom d-flex justify-content-between align-items-center">
-                                <h3 class="text-bold">Divisi Marketing</h3>
+                                <h3 class="text-bold">Divisi Keuangan</h3>
 
                             </div>
                             <!-- /.card-header -->
@@ -114,7 +114,7 @@
                         <!-- Divisi -->
                         <div class="card" style="border-top: 5px solid yellow;">
                             <div class="mx-4 mt-3 pb-2 border-bottom d-flex justify-content-between align-items-center">
-                                <h3 class="text-bold">Divisi IT</h3>
+                                <h3 class="text-bold">Divisi Marketing</h3>
 
                             </div>
                             <!-- /.card-header -->
@@ -125,7 +125,7 @@
                                             <th style="width: 10px">No</th>
                                             <th>Nama</th>
                                             <th>Posisi</th>
-                                            <th>Rencana Aktivitas</th>
+                                            <th>Rencana</th>
                                             <th>Progres</th>
                                         </tr>
                                     </thead>

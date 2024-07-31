@@ -28,24 +28,24 @@
                                     <tbody>
                                         <?php $i = 1; ?>
                                         <?php foreach ($members as $member) : ?>
-                                            <tr>
+                                            <tr data-user-id="<?= $member['id'] ?>" data-user-name=" Pengguna : <?= $member['name'] ?>" data-type="Pengguna">
                                                 <td data-label="No"><?= $i++; ?></td>
                                                 <td data-label="Nama"><?= $member['name'] ?></td>
                                                 <td data-label="Posisi"><?= $member['role']['role'] ?></td>
                                                 <td data-label="Divisi"><?= $member['role']['division'] ?></td>
                                                 <td data-label="Action" class="d-flex">
                                                     <div class="p-1">
-                                                        <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna" class="btn btn-primary">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/detail-pengguna/<?= $member['id'] ?>" class="btn btn-primary">
                                                             <i class="nav-icon fas fa-eye"></i>
                                                         </a>
                                                     </div>
                                                     <div class="p-1">
-                                                        <a href="<?php echo (base_url()) ?>pengguna/update-pengguna" class="btn btn-warning">
+                                                        <a href="<?php echo (base_url()) ?>pengguna/update-pengguna/<?= $member['id'] ?>" class="btn btn-warning">
                                                             <i class="nav-icon fas fa-pen"></i>
                                                         </a>
                                                     </div>
                                                     <div class="p-1">
-                                                        <button href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-lg">
+                                                        <button class="btn btn-danger delete-user-btn" data-toggle="modal" data-target="#modal-lg">
                                                             <i class="nav-icon fas fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -67,30 +67,4 @@
     <!-- /.content -->
 </div>
 
-<!-- Modal/Alert -->
-<div class="modal fade" id="modal-lg">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Hapus Data</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Apakah anda yakin akan menghapus ...</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-danger toastrDefaultSuccess" data-dismiss="modal">
-                    <i class="nav-icon fas fa-trash pr-2"></i>Hapus
-                </button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 <?php $this->endSection(); ?>

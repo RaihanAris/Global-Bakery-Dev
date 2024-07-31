@@ -93,14 +93,14 @@ class Pengguna extends BaseController
                 }
             }
         }
-        // dd($posisi_pengguna);
+        // dd($posisi_pengguna, $posisi_name);
 
         $data = [
             'title' => 'Detail Posisi | Admin',
             'menu' => 'pengguna',
             'role' => $this->role,
             'members' => $posisi_pengguna,
-            'posisi' => $posisi_name
+            'posisi' => $posisi_name,
 
         ];
         return view('pengguna/detail_posisi', $data);
@@ -548,6 +548,7 @@ class Pengguna extends BaseController
         $sex = $this->request->getPost('sexPengguna');
         $birth = $this->request->getPost('birthPengguna');
         $foto = $this->request->getPost('fotoPengguna');
+        dd($id);
         // Ambil roles dan divisions dari form
         $roles = $this->request->getPost('roles');
         $divisions = $this->request->getPost('divisions');
@@ -604,7 +605,7 @@ class Pengguna extends BaseController
             session()->setFlashdata('success', $responseData['message']);
         }
 
-        return redirect()->to('/pengguna/update-pengguna/' . $id);
+        return redirect()->to('/pengguna');
     }
     public function delete_user(): \CodeIgniter\HTTP\RedirectResponse
     {

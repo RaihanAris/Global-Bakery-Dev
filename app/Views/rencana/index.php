@@ -35,24 +35,53 @@
                                             <th style="width: 10px">No</th>
                                             <th>Nama Pengguna</th>
                                             <th>Detail Rencana</th>
-                                            <th>Tanggal</th>
                                             <th>Ketegori</th>
-                                            <th>Role</th>
-                                            <th>Progress</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $i = 1; ?>
-                                        <?php foreach ($user_plan_list as $user_plan) : ?>
+                                        <?php foreach ($user_plan_list as $user_plans) : ?>
                                             <tr>
                                                 <td data-label="No" class="align-middle"><?= $i++ ?></td>
-                                                <td data-label="Nama Pengguna" class="align-middle"><?= $user_plan['user_name'] ?></td>
+                                                <td data-label="Nama Pengguna" class="align-middle">
+                                                    <?= $user_plans['user_name'] ?>
+                                                    <br>
+                                                    <?php foreach ($user_plans['role'] as $role_division) : ?>
+                                                        <span class="badge text-bg-warning text-sm"><?= $role_division['role'] ?> - <?= $role_division['division'] ?></span>
+                                                        <br>
+                                                    <?php endforeach; ?>
+                                                </td>
                                                 <td data-label="Detail Rencana" class="align-middle">
+                                                    <?php foreach ($user_plans['plans'] as $user_plan) : ?>
+                                                        <!-- card -->
+                                                        <div class="card bg-gradient-warning collapsed-card mb-1">
+                                                            <div class="card-header">
+                                                                <h3 class="card-title text-bold">
+                                                                    <li class="text-sm"><?= $user_plan['title'] ?></li>
+                                                                </h3>
+
+                                                                <div class="card-tools">
+                                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                                        <i class="fas fa-plus"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <!-- /.card-tools -->
+                                                            </div>
+                                                            <!-- /.card-header -->
+                                                            <div class="card-body">
+                                                                <p class="text-bold">Created at: <?= $user_plan['created_at'] ?></p>
+                                                                <p>Deskripsi: <br><?= $user_plan['description'] ?></p>
+                                                            </div>
+                                                            <!-- /.card-body -->
+                                                        </div>
+                                                        <!-- /.card -->
+                                                    <?php endforeach; ?>
                                                     <!-- card -->
-                                                    <div class="card bg-gradient-warning collapsed-card mb-1">
+                                                    <div class="card bg-gradient-info collapsed-card mb-1">
                                                         <div class="card-header">
-                                                            <h3 class="card-title text-bold">
-                                                                <li><?= $user_plan['title'] ?></li>
+                                                            <h3 class="card-title text-bold text-sm">
+                                                                Detail Aktivitas
                                                             </h3>
 
                                                             <div class="card-tools">
@@ -64,30 +93,40 @@
                                                         </div>
                                                         <!-- /.card-header -->
                                                         <div class="card-body">
-                                                            <p><?= $user_plan['description'] ?></p>
+                                                            <?php foreach ($plan_category as $work_hour) : ?>
+                                                                <li class="text-bold"><?= $work_hour['name'] ?></li>
+                                                                <?php foreach ($activity_list as $activities) : ?>
+                                                                    <?php foreach ($user_plans['plans'] as $user_plan) :
+                                                                        if ($user_plan['id'] == ($activities['planId']) && $activities['categoryId'] == $work_hour['id']) {
+                                                                            $activity = $activities['title'];
+                                                                        } else {
+                                                                            $activity = null;
+                                                                        } ?>
+                                                                        <p style="text-align: left;"><?= $activity ?></p>
+                                                                    <?php endforeach; ?>
+                                                                <?php endforeach; ?>
+                                                            <?php endforeach; ?>
                                                         </div>
                                                         <!-- /.card-body -->
                                                     </div>
                                                     <!-- /.card -->
                                                 </td>
-                                                <td data-label="Tanggal" class="align-middle">
-                                                    <?= $user_plan['created_at'] ?>
-                                                </td>
                                                 <td data-label="Kategori" class="align-middle">
                                                     <?= $user_plan['category'] ?>
                                                 </td>
-                                                <td data-label="Posisi" class="align-middle">
-                                                    <?php foreach ($user_plan['role'] as $role_division) : ?>
-                                                        <span class="badge text-bg-warning text-sm"><?= $role_division['role'] ?> - <?= $role_division['division'] ?></span>
+                                                <td data-label="Progress" class="align-middle ">
+                                                    <?php foreach ($user_plans['plans'] as $user_plan) : ?>
+                                                        <li><?= $user_plan['status'] ?>
+                                                            <?php if ($user_plan['progress'] == 100) {
+                                                                $color = 'success';
+                                                            } elseif ($user_plan['progress'] > 50 && $user_plan['progress'] < 100) {
+                                                                $color = 'warning';
+                                                            } else {
+                                                                $color = 'danger';
+                                                            } ?>
+                                                            <span class="badge bg-<?= $color ?>"><?= $user_plan['progress'] ?>%</span>
+                                                        </li>
                                                     <?php endforeach; ?>
-                                                </td>
-                                                <td data-label="Progress" class="align-middle">
-                                                    <div class="progress-rencana">
-                                                        <div class="progress progress-xs progress-striped active">
-                                                            <div class="progress-bar bg-primary" style="width: <?= $user_plan['progress'] ?>%"></div>
-                                                        </div>
-                                                        <span class="badge bg-success"><?= $user_plan['progress'] ?>%</span>
-                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

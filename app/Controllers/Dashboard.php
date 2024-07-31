@@ -80,7 +80,7 @@ class Dashboard extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/all?limit=10&offset=0',
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/all?limit=20&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -133,34 +133,101 @@ class Dashboard extends BaseController
         // dd($jumlah);
         return ($jumlah);
     }
+    public function get_activity_list()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/list?limit=10&offset=0',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
+        return ($responseData['data']);
+    }
+    public function get_plan_category()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/category/list?limit=10&offset=0',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
+        return ($responseData['data']);
+    }
 
     public function index()
     {
         $users = $this->get_pengguna_list();
         $user_plans = $this->get_plan_list();
         $anggota = $this->jumlah_anggota();
+        $plan_category = $this->get_plan_category();
+        $activity_list = $this->get_activity_list();
 
+        $plans_by_user = [];
+        $user_plan_list = [];
         $aktivitas = 0;
         $project = 0;
-        foreach ($users as $user) {
-            foreach ($user_plans as $user_plan) {
-                if ($user_plan['created_by'] === $user['id']) {
-                    $aktivitas++;
-                    $detail = $this->get_detail_pengguna($user['id']);
-                    $combined_plan = array_merge($user_plan, [
-                        'user_name' => $user['name'],
-                        'user_id' => $user['id'],
-                        'role' => $detail['role']
-                    ]);
-                    $user_plan_list[] = $combined_plan;
-                    if ($user_plan['category'] === 'project') {
-                        $project++;
-                    }
-                }
+
+        // Kelompokkan rencana berdasarkan created_by
+        foreach ($user_plans as $user_plan) {
+            $created_by = $user_plan['created_by'];
+            if (!isset($plans_by_user[$created_by])) {
+                $plans_by_user[$created_by] = [];
+            }
+            $plans_by_user[$created_by][] = $user_plan;
+            $aktivitas++;
+            if ($user_plan['category'] === 'project') {
+                $project++;
             }
         }
 
-
+        // Gabungkan data pengguna dengan rencana
+        foreach ($users as $user) {
+            $user_id = $user['id'];
+            if (isset($plans_by_user[$user_id])) {
+                $detail = $this->get_detail_pengguna($user_id);
+                $user_data = [
+                    'user_name' => $user['name'],
+                    'user_id' => $user_id,
+                    'role' => $detail['role'],
+                    'plans' => $plans_by_user[$user_id]
+                ];
+                $user_plan_list[] = $user_data;
+            }
+        }
 
         $data = [
             'title' => 'Dashboard | Admin',
@@ -169,7 +236,10 @@ class Dashboard extends BaseController
             'user_plan_list' => $user_plan_list,
             'anggota' => $anggota,
             'aktivitas' => $aktivitas,
-            'project' => $project
+            'project' => $project,
+            'plan_category' => $plan_category,
+            'activity_list' => $activity_list,
+
         ];
 
         return view('dashboard/dashboard', $data);

@@ -86,8 +86,6 @@
                                 Pengguna
                             </button>
                         </form>
-
-                        <!-- /.card -->
                     </div>
                 </div>
             </div>
