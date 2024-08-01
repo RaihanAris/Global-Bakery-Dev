@@ -437,12 +437,12 @@ class Pengguna extends BaseController
         $responseData = json_decode($response, true);
         return $responseData['data'];
     }
-    public function get_plan_pengguna($id)
+    public function get_plan_list($id)
     {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/byUser?limit=10&offset=0&user=' . $id,
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/byUser?limit=20&offset=0&user=' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -461,27 +461,134 @@ class Pengguna extends BaseController
         curl_close($curl);
 
         $responseData = json_decode($response, true);
-        // foreach ($responseData['data'] as $project) {
-        //     if ($project['category'] === 'project') {
-        //         $list_project[] = $project;
-        //     }
-        // }
+
+        // dd($responseData['data']);
+        return ($responseData['data']);
+    }
+    public function get_activity_list($PlanId)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/list?limit=10&offset=0&planId=' . $PlanId,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
+        return ($responseData['data']);
+    }
+    public function get_plan_category()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/category/list?limit=10&offset=0',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
+        return ($responseData['data']);
+    }
+    public function get_evaluation_user($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/evaluation/list?date=2024-07-31&user=' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
         return ($responseData['data']);
     }
     public function detail_pengguna($id): string
     {
         $userDetails = $this->get_detail_pengguna($id);
-        $userPlan = $this->get_plan_pengguna($id);
+        $userPlans = $this->get_plan_list($id);
+        $workHours = $this->get_plan_category();
+        $dailyValues = $this->get_evaluation_user($id);
+        foreach ($dailyValues as $values) {
+            $dailyValue[] = $values['value'];
+        }
 
+        $plansByDate = [];
+        $userActivities = [];
+        foreach ($userPlans as $plan) {
+            // Mendapatkan hanya tanggal (tanpa waktu)
+            $createdAtDate = date('Y-m-d', strtotime($plan['created_at']));
+
+            // Jika tanggal belum ada di $plansByDate, inisialisasi array
+            if (!isset($plansByDate[$createdAtDate])) {
+                $plansByDate[$createdAtDate] = [];
+            }
+            $plansByDate[$createdAtDate][] = $plan;
+
+            // Masukkan Activity pada plan ke dalam array
+            $userActivity = $this->get_activity_list($plan['id']);
+            if ($userActivity != null) {
+                $userActivities = array_merge($userActivities, $userActivity);
+            }
+        }
+
+
+        // dd($userActivities);
         $data = [
             'title' => 'Detail Pengguna | Admin',
             'menu' => 'pengguna',
             'role' => $this->role,
             'details' => $userDetails,
             'idmembers' => $id,
-            'userPlan' => $userPlan
+            'plansByDate' => $plansByDate,
+            'userActivities' => $userActivities,
+            'workHours' => $workHours,
+            'dailyValues' => $dailyValue
         ];
-
+        // dd($plansByDate);
         return view('pengguna/detail_pengguna', $data);
     }
     public function update_pengguna($id): string

@@ -80,7 +80,7 @@ class Rencana extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/all?limit=10&offset=0',
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/all?limit=20&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -155,7 +155,7 @@ class Rencana extends BaseController
 
         return ($responseData['data']);
     }
-    public function index(): string
+    public function index()
     {
         $users = $this->get_pengguna_list();
         $user_plans = $this->get_plan_list();
@@ -164,8 +164,6 @@ class Rencana extends BaseController
 
         $plans_by_user = [];
         $user_plan_list = [];
-        $aktivitas = 0;
-        $project = 0;
 
         // Kelompokkan rencana berdasarkan created_by
         foreach ($user_plans as $user_plan) {
@@ -174,10 +172,6 @@ class Rencana extends BaseController
                 $plans_by_user[$created_by] = [];
             }
             $plans_by_user[$created_by][] = $user_plan;
-            $aktivitas++;
-            if ($user_plan['category'] === 'project') {
-                $project++;
-            }
         }
 
         // Gabungkan data pengguna dengan rencana
@@ -200,8 +194,6 @@ class Rencana extends BaseController
             'menu' => 'rencana',
             'role' => $this->role,
             'user_plan_list' => $user_plan_list,
-            'aktivitas' => $aktivitas,
-            'project' => $project,
             'plan_category' => $plan_category,
             'activity_list' => $activity_list,
 
@@ -209,6 +201,7 @@ class Rencana extends BaseController
 
         return view('rencana/index', $data);
     }
+
     public function history(): string
     {
         $data = [

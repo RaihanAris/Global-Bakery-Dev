@@ -73,7 +73,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                <canvas class="chart" id="evaluation" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                             </div>
                         </div>
                         <div class="card" style="border-top: 5px solid yellow;">
@@ -95,16 +95,41 @@
                                     </thead>
                                     <tbody>
                                         <?php $i = 1; ?>
-                                        <?php foreach ($userPlan as $plan) : ?>
+                                        <?php foreach ($plansByDate as $plans) : ?>
                                             <tr>
                                                 <td data-label="No" class="align-middle"><?= $i++ ?></td>
                                                 <td data-label="Nama Pengguna" class="align-middle"> <?= $details['name'] ?></td>
                                                 <td data-label="Detail Rencana" class="align-middle">
+                                                    <?php foreach ($plans as $plan) : ?>
+
+                                                        <!-- card -->
+                                                        <div class="card bg-gradient-warning collapsed-card mb-1">
+                                                            <div class="card-header">
+                                                                <h3 class="card-title text-bold">
+                                                                    <li><?= $plan['title'] ?></li>
+                                                                </h3>
+
+                                                                <div class="card-tools">
+                                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                                        <i class="fas fa-plus"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <!-- /.card-tools -->
+                                                            </div>
+                                                            <!-- /.card-header -->
+                                                            <div class="card-body">
+                                                                <p><?= $plan['description'] ?></p>
+                                                            </div>
+                                                            <!-- /.card-body -->
+                                                        </div>
+                                                        <!-- /.card -->
+                                                    <?php endforeach; ?>
+
                                                     <!-- card -->
-                                                    <div class="card bg-gradient-warning collapsed-card mb-1">
+                                                    <div class="card bg-gradient-info collapsed-card mb-1">
                                                         <div class="card-header">
                                                             <h3 class="card-title text-bold">
-                                                                <li><?= $plan['title'] ?></li>
+                                                                <li>Detail Aktivitas</li>
                                                             </h3>
 
                                                             <div class="card-tools">
@@ -116,7 +141,19 @@
                                                         </div>
                                                         <!-- /.card-header -->
                                                         <div class="card-body">
-                                                            <p><?= $plan['description'] ?></p>
+                                                            <?php foreach ($workHours as $workHour) : ?>
+                                                                <li class="text-bold"><?= $workHour['name'] ?></li>
+                                                                <?php foreach ($plans as $plan) : ?>
+                                                                    <?php foreach ($userActivities as $activity) :
+                                                                        if ($activity['categoryId'] == $workHour['id'] && $plan['id'] == $activity['planId']) {
+                                                                            $activity = $activity['title'];
+                                                                        } else {
+                                                                            $activity = null;
+                                                                        } ?>
+                                                                        <p style="text-align: left;"><?= $activity ?></p>
+                                                                    <?php endforeach; ?>
+                                                                <?php endforeach; ?>
+                                                            <?php endforeach; ?>
                                                         </div>
                                                         <!-- /.card-body -->
                                                     </div>
@@ -129,12 +166,18 @@
                                                     <?= $plan['category'] ?>
                                                 </td>
                                                 <td data-label="Progress" class="align-middle">
-                                                    <div class="progress-rencana">
-                                                        <div class="progress progress-xs progress-striped active">
-                                                            <div class="progress-bar bg-primary" style="width: <?= $plan['progress'] ?>%"></div>
-                                                        </div>
-                                                        <span class="badge bg-success"><?= $plan['progress'] ?>%</span>
-                                                    </div>
+                                                    <?php foreach ($plans as $plan) : ?>
+                                                        <li><?= $plan['status'] ?>
+                                                            <?php if ($plan['progress'] == 100) {
+                                                                $color = 'success';
+                                                            } elseif ($plan['progress'] > 50 && $plan['progress'] < 100) {
+                                                                $color = 'warning';
+                                                            } else {
+                                                                $color = 'danger';
+                                                            } ?>
+                                                            <span class="badge bg-<?= $color ?>"><?= $plan['progress'] ?>%</span>
+                                                        </li>
+                                                    <?php endforeach; ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -154,3 +197,66 @@
 </div>
 <!-- /.content-wrapper -->
 <?php $this->endSection(); ?>
+<script>
+    $(function() {
+        // Data dari PHP
+        var dailyValues = <?= json_encode($dailyValues) ?>;
+
+        // Ubah nilai string menjadi integer
+        var data = dailyValues.map(function(value) {
+            return parseInt(value, 10);
+        });
+
+        // Tentukan label (tanggal) untuk data tersebut
+        var labels = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'];
+
+        // Sales Graph Data
+        var salesData = {
+            labels: labels,
+            datasets: [{
+                backgroundColor: 'rgb(255,193,7)',
+                borderColor: 'rgb(243,235,222)',
+                data: data
+            }]
+        };
+
+        // Sales Graph Options
+        var salesOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        fontColor: 'rgb(255,255,255)'
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display: true,
+                        color: 'rgb(243,235,222)'
+                    },
+                    ticks: {
+                        beginAtZero: false,
+                        fontColor: 'rgb(255,255,255)'
+                    }
+                }]
+            }
+        };
+
+        // Get the context of the canvas element we want to select
+        var salesChartCanvas = $('#evaluation').get(0).getContext('2d');
+
+        // Create the line chart
+        var salesChart = new Chart(salesChartCanvas, {
+            type: 'line',
+            data: salesData,
+            options: salesOptions
+        });
+    });
+</script>

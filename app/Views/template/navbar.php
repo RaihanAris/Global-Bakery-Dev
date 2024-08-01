@@ -298,7 +298,7 @@
 
         <!-- Project graph -->
         <script>
-            // Data untuk chart (contoh data)
+            // Data untuk chart Projek (contoh data)
             var barData = {
                 labels: ["Pembukaan Projek Baru", "Pembukaan Cabang Baru"],
                 datasets: [{
