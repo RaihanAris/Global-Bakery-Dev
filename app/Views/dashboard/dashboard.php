@@ -154,8 +154,7 @@
                                 <th style="width: 10px">No</th>
                                 <th>Nama Pengguna</th>
                                 <th>Detail Rencana</th>
-                                <th>Ketegori</th>
-                                <th>Status</th>
+                                <th>Tanggal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -176,8 +175,13 @@
                                             <!-- card -->
                                             <div class="card bg-gradient-warning collapsed-card mb-1">
                                                 <div class="card-header">
-                                                    <h3 class="card-title text-bold">
-                                                        <li class="text-sm"><?= $user_plan['title'] ?> <span class="badge text-bg-primary text-sm"><?= $user_plan['category'] ?></span></li>
+                                                    <h3 class="card-title text-bold" data-title="<?= $user_plan['title'] ?>" data-status="<?= $user_plan['status'] ?>" data-progress="<?= $user_plan['progress'] ?>" data-plan-id="<?= $user_plan['id'] ?>">
+                                                        <?php if ($user_plan['progress'] == 100 || $user_plan['status'] == 'complete') {
+                                                            $statusBg = 'success';
+                                                        } else {
+                                                            $statusBg = 'danger';
+                                                        } ?>
+                                                        <li class="text-sm"><?= $user_plan['title'] ?> <span class="badge text-bg-primary text-sm"> <?= $user_plan['category'] ?></span> <button class="badge text-bg-<?= $statusBg ?> text-sm" data-toggle="modal" data-target="#change-status"><?= $user_plan['status'], " ", $user_plan['progress'] ?>%</button> </li>
                                                     </h3>
 
                                                     <div class="card-tools">
@@ -218,10 +222,43 @@
                                                         <?php foreach ($user_plans['plans'] as $user_plan) :
                                                             if ($user_plan['id'] == ($activities['planId']) && $activities['categoryId'] == $work_hour['id']) {
                                                                 $activity = $activities['title'];
+                                                                $planActivity = $user_plan['title'];
+                                                                $activityDesc = $user_plan['description'];
+                                                                $activityStatus = $user_plan['status'];
+                                                                $activityCreated = $user_plan['created_at'];
+                                                                $activityUpdated = $user_plan['updated_at'];
+                                                        ?>
+                                                                <div class="card card-outline card-warning collapsed-card mb-1">
+                                                                    <div class="card-header">
+                                                                        <h3 class="card-title text-bold text-sm text-start">
+                                                                            <?= $activity ?> <span class=" badge text-bg-warning text-sm d-flex"><?= $planActivity ?></span>
+                                                                        </h3>
+
+                                                                        <div class="card-tools">
+                                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                                                <i class="fas fa-plus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                        <!-- /.card-tools -->
+                                                                    </div>
+                                                                    <!-- /.card-header -->
+                                                                    <div class="card-body text-sm text-start">
+                                                                        <li class="p-0"> Deskripsi : <?= $activityDesc ?> </li>
+                                                                        <li class="p-0"> Status : <?= $activityStatus ?> </li>
+                                                                        <li class="p-0"> Dibuat : <?= $activityCreated ?> </li>
+                                                                        <li class="p-0"> Diupdate : <?= $activityUpdated ?> </li>
+                                                                    </div>
+                                                                    <!-- /.card-body -->
+                                                                </div>
+                                                            <?php
                                                             } else {
                                                                 $activity = null;
+                                                                $planActivity = null;
+                                                                $activityDesc = null;
+                                                                $planActivit = null;
+                                                                $planActivity = null;
+                                                                $planActivity = null;
                                                             } ?>
-                                                            <p style="text-align: left;"><?= $activity ?></p>
                                                         <?php endforeach; ?>
                                                     <?php endforeach; ?>
                                                 <?php endforeach; ?>
@@ -231,21 +268,7 @@
                                         <!-- /.card -->
                                     </td>
                                     <td data-label="Kategori" class="align-middle">
-                                        <?= $user_plan['category'] ?>
-                                    </td>
-                                    <td data-label="Progress" class="align-middle ">
-                                        <?php foreach ($user_plans['plans'] as $user_plan) : ?>
-                                            <li><?= $user_plan['status'] ?>
-                                                <?php if ($user_plan['progress'] == 100) {
-                                                    $color = 'success';
-                                                } elseif ($user_plan['progress'] > 50 && $user_plan['progress'] < 100) {
-                                                    $color = 'warning';
-                                                } else {
-                                                    $color = 'danger';
-                                                } ?>
-                                                <span class="badge bg-<?= $color ?>"><?= $user_plan['progress'] ?>%</span>
-                                            </li>
-                                        <?php endforeach; ?>
+                                        <?= $user_plan['created_at'] ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

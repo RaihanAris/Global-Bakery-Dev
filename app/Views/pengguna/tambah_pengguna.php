@@ -30,8 +30,8 @@
                                     <div class="form-group">
                                         <label>Gender</label>
                                         <select class="form-control select2" style="width: 100%" name="gender-pengguna">
-                                            <option selected="selected">male</option>
-                                            <option>female</option>
+                                            <option selected="selected" value="male">Laki-laki</option>
+                                            <option value="female">Perempuan</option>
                                         </select>
                                     </div>
 

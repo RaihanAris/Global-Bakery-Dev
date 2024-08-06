@@ -14,6 +14,7 @@ $routes->get('/login/resetPass', 'Login::resetPass');
 
 // DASHBOARD
 $routes->get('/dashboard', 'Dashboard::index');
+$routes->post('/dashboard/update-plan', 'Dashboard::update_status_plan');
 
 // PENGGUNA
 $routes->get('/pengguna', 'Pengguna::index');

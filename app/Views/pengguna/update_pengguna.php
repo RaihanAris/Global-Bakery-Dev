@@ -27,8 +27,8 @@
                                     <div class="form-group">
                                         <label>Jenis Kelamin</label>
                                         <select class="form-control select2" name="sexPengguna" style="width: 100%">
-                                            <option <?= $details['sex'] == 'male' ? 'selected' : '' ?> value="male">Male</option>
-                                            <option <?= $details['sex'] == 'female' ? 'selected' : '' ?> value="female">Female</option>
+                                            <option <?= $details['sex'] == 'male' ? 'selected' : '' ?> value="male">Laki-laki</option>
+                                            <option <?= $details['sex'] == 'female' ? 'selected' : '' ?> value="female">Perempuan</option>
                                         </select>
                                     </div>
 
@@ -57,7 +57,7 @@
                                         <div class="form-group role-division-pair">
                                             <div class="form-group ">
                                                 <label>Posisi</label>
-                                                <select class="form-control select2" name="roles[]">
+                                                <select class="form-control select2" name="roles[]" disabled>
                                                     <?php foreach ($roles as $role) : ?>
                                                         <option value="<?= $role['code'] ?>" <?= $user_role['role'] == $role['code'] ? 'selected' : '' ?>><?= $role['name'] ?></option>
                                                     <?php endforeach; ?>
@@ -66,7 +66,7 @@
 
                                             <div class="form-group ">
                                                 <label>Divisi</label>
-                                                <select class="form-control select2" name="divisions[]">
+                                                <select class="form-control select2" name="divisions[]" disabled>
                                                     <?php foreach ($divisions as $division) : ?>
                                                         <option value="<?= $division['id'] ?>" <?= $user_role['divisionId'] == $division['id'] ? 'selected' : '' ?>><?= $division['name'] ?></option>
                                                     <?php endforeach; ?>

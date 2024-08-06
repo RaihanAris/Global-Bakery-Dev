@@ -241,7 +241,48 @@ class Dashboard extends BaseController
             'activity_list' => $activity_list,
 
         ];
+        // dd($user_plan_list, $plan_category, $activity_list);
 
         return view('dashboard/dashboard', $data);
+    }
+
+    public function update_status_plan()
+    {
+        $id = $this->request->getPost('id');
+        $status = $this->request->getPost('status');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/update/' . $id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                "status" => $status
+            )),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $responseData = json_decode($response, true);
+
+        if ($responseData['status'] === true) {
+            session()->setFlashdata('success', $responseData['message']);
+        } else {
+            session()->setFlashdata('error', $responseData['message']);
+        }
+
+        return redirect()->to('/dashboard');
     }
 }

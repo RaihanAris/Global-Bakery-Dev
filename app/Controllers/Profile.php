@@ -13,6 +13,7 @@ class Profile extends BaseController
     protected $email;
     protected $sex;
     protected $birth;
+    protected $picture;
 
     public function __construct()
     {
@@ -22,7 +23,8 @@ class Profile extends BaseController
             $this->name = session()->get('userName');
             $this->email = session()->get('userEmail');
             $this->sex = session()->get('userSex');
-            $this->birth = session()->get('userbirth');
+            $this->birth = session()->get('userBirth');
+            $this->picture = session()->get('userPicture');
         }
     }
     public function index()
@@ -36,7 +38,6 @@ class Profile extends BaseController
             'sex' => $this->sex,
             'birth' => $this->birth,
         ];
-        // dd($profileData);
         return view('profile/profile', $data);
     }
     public function changePass()

@@ -35,8 +35,7 @@
                                             <th style="width: 10px">No</th>
                                             <th>Nama Pengguna</th>
                                             <th>Detail Rencana</th>
-                                            <th>Ketegori</th>
-                                            <th>Status</th>
+                                            <th>Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,8 +56,13 @@
                                                         <!-- card -->
                                                         <div class="card bg-gradient-warning collapsed-card mb-1">
                                                             <div class="card-header">
-                                                                <h3 class="card-title text-bold">
-                                                                    <li class="text-sm"><?= $user_plan['title'] ?></li>
+                                                                <h3 class="card-title text-bold" data-title="<?= $user_plan['title'] ?>" data-status="<?= $user_plan['status'] ?>" data-progress="<?= $user_plan['progress'] ?>" data-plan-id="<?= $user_plan['id'] ?>">
+                                                                    <?php if ($user_plan['progress'] == 100 || $user_plan['status'] == 'complete') {
+                                                                        $statusBg = 'success';
+                                                                    } else {
+                                                                        $statusBg = 'danger';
+                                                                    } ?>
+                                                                    <li class="text-sm"><?= $user_plan['title'] ?> <span class="badge text-bg-primary text-sm"> <?= $user_plan['category'] ?></span> <button class="badge text-bg-<?= $statusBg ?> text-sm" data-toggle="modal" data-target="#change-status"><?= $user_plan['status'], " ", $user_plan['progress'] ?>%</button> </li>
                                                                 </h3>
 
                                                                 <div class="card-tools">
@@ -112,21 +116,7 @@
                                                     <!-- /.card -->
                                                 </td>
                                                 <td data-label="Kategori" class="align-middle">
-                                                    <?= $user_plan['category'] ?>
-                                                </td>
-                                                <td data-label="Progress" class="align-middle ">
-                                                    <?php foreach ($user_plans['plans'] as $user_plan) : ?>
-                                                        <li><?= $user_plan['status'] ?>
-                                                            <?php if ($user_plan['progress'] == 100) {
-                                                                $color = 'success';
-                                                            } elseif ($user_plan['progress'] > 50 && $user_plan['progress'] < 100) {
-                                                                $color = 'warning';
-                                                            } else {
-                                                                $color = 'danger';
-                                                            } ?>
-                                                            <span class="badge bg-<?= $color ?>"><?= $user_plan['progress'] ?>%</span>
-                                                        </li>
-                                                    <?php endforeach; ?>
+                                                    <?= $user_plan['created_at'] ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

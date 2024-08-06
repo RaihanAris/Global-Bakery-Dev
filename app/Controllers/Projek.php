@@ -317,16 +317,16 @@ class Projek extends BaseController
                 $assignedUser[] = $users;
             }
         }
-        dd($details, $assignedDivision,  $divisionDetail, $assignedUser, $divisionList, $userList);
+        // dd($details, $assignedDivision,  $divisionDetail, $assignedUser, $divisionList, $userList);
 
         $data = [
             'title' => 'Projek | Admin',
             'menu' => 'projek',
             'role' => $this->role,
             'details' => $details,
-            'assignedDivision' => $assignedDivision,
-            'divisionDetail' => $divisionDetail,
-            'assignedUser' => $assignedUser,
+            // 'assignedDivision' => $assignedDivision,
+            // 'divisionDetail' => $divisionDetail,
+            // 'assignedUser' => $assignedUser,
             'divisionList' => $divisionList,
             'userList' => $userList
         ];

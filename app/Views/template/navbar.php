@@ -106,12 +106,44 @@
         </aside>
 
         <?= $this->renderSection('content') ?>
-        <!-- Modal HTML -->
+        <!-- Modal HTML Change Plan Status -->
+        <div class="modal fade" id="change-status">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-bold">Ganti Status Rencana</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" id="changeStatus" action="">
+                        <div class="modal-body">
+                            <p>Apakah anda yakin akan mangganti status <span id="titleToChange" class="text-bold"></span>? (Status saat ini <span id="statusBefore" class="text-bold"></span>) </p>
+                            <div class="form-group">
+                                <label>Ganti Status</label>
+                                <select class="form-control select2" style="width: 100%" name="status">
+                                    <option selected value="progress">Progress</option>
+                                    <option value="complete">Complete</option>
+                                </select>
+                                <input type="hidden" id="planId" name="id" value="">
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+
+                            <button type="submit" class="btn btn-danger">Ganti</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- Modal HTML Delete User/Division -->
         <div class="modal fade" id="modal-lg">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Hapus Data</h4>
+                        <h4 class="modal-title text-bold">Hapus Data</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -120,7 +152,7 @@
                         <p>Apakah anda yakin akan menghapus <span id="userNameToDelete" class="text-bold"></span>?</p>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                         <form method="post" id="deleteForm" action="">
                             <input type="hidden" id="userIdToDelete" name="id" value="">
                             <input type="hidden" id="dataType" name="type" value="">
@@ -131,13 +163,13 @@
             </div>
             <!-- /.modal-content -->
         </div>
-        <!-- Modal HTML Delete Role User -->
+
         <!-- Modal HTML Delete Role User -->
         <div class="modal fade" id="modal-lg2">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Hapus Data</h4>
+                        <h4 class="modal-title text-bold">Hapus Data</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -146,7 +178,7 @@
                         <p>Apakah anda yakin akan menghapus <span id="userNameToDeleteRole" class="text-bold"></span> pada pengguna ini?</p>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                         <form method="post" id="deleteForm2" action="">
                             <input type="hidden" id="userIdToDeleteRole" name="id" value="">
                             <input type="hidden" id="dataTypeRole" name="type" value="">
@@ -213,8 +245,7 @@
         <script>
             $(function() {
 
-                $("#example1")
-                    .DataTable({
+                $("#example1").DataTable({
                         responsive: true,
                         lengthChange: false,
                         autoWidth: false,
@@ -223,6 +254,15 @@
                     .buttons()
                     .container()
                     .appendTo("#example1_wrapper .col-md-6:eq(0)");
+                $("#divisi").DataTable({
+                        responsive: true,
+                        lengthChange: false,
+                        autoWidth: false,
+                        buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
+                    })
+                    .buttons()
+                    .container()
+                    .appendTo("#divisi_wrapper .col-md-6:eq(0)");
                 $("#example2").DataTable({
                     paging: true,
                     lengthChange: false,
@@ -240,6 +280,83 @@
             //Initialize Select2 Elements
             $(".select2bs4").select2({
                 theme: "bootstrap4",
+            });
+        </script>
+        <!-- GRAPH Evaluasi -->
+        <script>
+            $(function() {
+                // Data dari PHP
+                var dailyValues = <?= json_encode(isset($dailyValues) ? $dailyValues : []) ?>;
+
+                // Ubah nilai string menjadi integer
+                var data = dailyValues.map(function(value) {
+                    return parseInt(value, 10);
+                });
+
+                // Tentukan label (tanggal) untuk data tersebut
+                var labels = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'];
+
+                // Sales Graph Data
+                var salesData = {
+                    labels: labels,
+                    datasets: [{
+                        backgroundColor: 'transparent',
+                        borderColor: 'rgb(0,0,0)',
+                        data: data
+                    }]
+                };
+
+                // Sales Graph Options
+                var salesOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Days', // Label for X-axis
+                                fontColor: 'rgb(0,0,0)'
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                fontColor: 'rgb(0,0,0)'
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Nilai', // Label for Y-axis
+                                fontColor: 'rgb(0,0,0)'
+                            },
+                            gridLines: {
+                                display: true,
+                                color: 'rgb(243,235,222)'
+                            },
+                            ticks: {
+                                beginAtZero: false,
+                                fontColor: 'rgb(0,0,0)',
+                                max: 3,
+                                min: 1,
+                                stepSize: 1
+                            }
+                        }]
+                    }
+                };
+
+                // Get the context of the canvas element we want to select
+                var salesChartCanvas = $('#evaluation').get(0).getContext('2d');
+
+                // Create the line chart
+                var salesChart = new Chart(salesChartCanvas, {
+                    type: 'line',
+                    data: salesData,
+                    options: salesOptions
+                });
             });
         </script>
         <!-- GRAPH Aktivitas -->
@@ -349,38 +466,72 @@
         </script>
         <script>
             $(document).ready(function() {
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
                 <?php if (session()->getFlashdata('success')) : ?>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: '<?= session()->getFlashdata('success') ?>',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
+                    toastr.success(
+                        '<?= session()->getFlashdata('success') ?>'
+                    );
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('error')) : ?>
+                    toastr.error(
+                        '<?= session()->getFlashdata('error') ?>'
+                    );
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('successUpdate')) : ?>
+                    toastr.success(
+                        '<?= session()->getFlashdata('successUpdate') ?>'
+                    );
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('errorUpdate')) : ?>
+                    toastr.error(
+                        '<?= session()->getFlashdata('errorUpdate') ?>'
+                    );
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('errorInfo')) : ?>
+                    toastr.info(
+                        '<?= session()->getFlashdata('errorInfo') ?>'
+                    );
                 <?php endif; ?>
 
-                <?php if (session()->getFlashdata('error')) : ?>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: '<?= session()->getFlashdata('error') ?>',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                <?php endif; ?>
             });
         </script>
+
         <!-- Passing ID dan Nama untuk di delete -->
         <script>
             $(document).ready(function() {
+                // untuk role dan user
                 let userIdToDelete;
                 let userNameToDelete;
+                // untuk plan
+                let planId;
+                let planTitle;
+                let planStatus;
+
                 let dataType;
 
+                $('#change-status').on('show.bs.modal', function(event) {
+                    var button = $(event.relatedTarget).closest('h3');
+
+                    var planTitle = button.data('title');
+                    var planStatus = button.data('status');
+                    var planId = button.data('plan-id');
+
+                    console.log('Title', planTitle);
+                    console.log('Progress', planId);
+                    console.log('Status', planStatus);
+
+                    var modal = $(this);
+                    modal.find('#titleToChange').text(planTitle);
+                    modal.find('#statusBefore').text(planStatus);
+                    modal.find('#planId').val(planId);
+
+                    modal.find('#changeStatus').attr('action', `<?php echo base_url('dashboard/update-plan'); ?>`);
+                });
                 $('#modal-lg').on('show.bs.modal', function(event) {
                     var button = $(event.relatedTarget);
 
@@ -396,12 +547,6 @@
                         var userNameToDelete = tr.data('user-name');
                         var dataType = tr.data('type');
                     }
-
-                    // Menampilkan data di console untuk debugging
-                    console.log("Modal-lg Data:");
-                    console.log("User ID: ", userIdToDelete);
-                    console.log("User Name: ", userNameToDelete);
-                    console.log("Data Type: ", dataType);
 
                     var modal = $(this);
                     modal.find('#userNameToDelete').text(userNameToDelete);

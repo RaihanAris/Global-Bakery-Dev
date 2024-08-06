@@ -111,7 +111,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/list?limit=10&offset=0&search=',
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/list?limit=20&offset=0&search=',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -555,6 +555,11 @@ class Pengguna extends BaseController
         foreach ($dailyValues as $values) {
             $dailyValue[] = $values['value'];
         }
+        // kosong apabila data null
+        if (empty($dailyValue)) {
+            $numberOfLabels = 6; // Misalnya, jika Anda memiliki 6 label
+            $dailyValue = array_fill(0, $numberOfLabels, 0);
+        }
 
         $plansByDate = [];
         $userActivities = [];
@@ -645,6 +650,13 @@ class Pengguna extends BaseController
 
         $response = curl_exec($curl);
         curl_close($curl);
+        $responseData = json_decode($response, true);
+
+        if ($responseData['status'] === false) {
+            session()->setFlashdata('errorUpdate', $responseData['message']);
+        } else {
+            session()->setFlashdata('successUpdate', $responseData['message']);
+        }
     }
     public function save_update_pengguna($id): \CodeIgniter\HTTP\RedirectResponse
     {
@@ -655,27 +667,10 @@ class Pengguna extends BaseController
         $sex = $this->request->getPost('sexPengguna');
         $birth = $this->request->getPost('birthPengguna');
         $foto = $this->request->getPost('fotoPengguna');
-        dd($id);
+        // dd($id);
         // Ambil roles dan divisions dari form
         $roles = $this->request->getPost('roles');
         $divisions = $this->request->getPost('divisions');
-
-        // Buat array roleDivisionPairs
-        if (is_array($roles) && is_array($divisions)) {
-            for ($i = 0; $i < count($roles); $i++) {
-                $roleExists = false;
-                foreach ($role_user['role'] as $existingRole) {
-                    if ($roles[$i] === $existingRole['role'] && $divisions[$i] === $existingRole['divisionId']) {
-                        $roleExists = True;
-                        $this->save_role_divisi($email, $roles[$i], $divisions[$i]);
-                        break;
-                    }
-                }
-                if (!$roleExists) {
-                    $this->save_role_divisi($email, $roles[$i], $divisions[$i]);
-                }
-            }
-        }
 
         $curl = curl_init();
 
@@ -710,6 +705,23 @@ class Pengguna extends BaseController
             session()->setFlashdata('error', $responseData['message']);
         } else {
             session()->setFlashdata('success', $responseData['message']);
+        }
+
+        // Buat array roleDivisionPairs
+        if (is_array($roles) && is_array($divisions)) {
+            for ($i = 0; $i < count($roles); $i++) {
+                $roleExists = false;
+                foreach ($role_user['role'] as $existingRole) {
+                    if ($roles[$i] === $existingRole['role'] && $divisions[$i] === $existingRole['divisionId']) {
+                        $roleExists = True;
+                        session()->setFlashdata('errorInfo', "Role " . $existingRole['role'] . " dan Divisi " . $existingRole['division'] . " sudah ada pada User");
+                        break;
+                    }
+                }
+                if (!$roleExists) {
+                    $this->save_role_divisi($email, $roles[$i], $divisions[$i]);
+                }
+            }
         }
 
         return redirect()->to('/pengguna');

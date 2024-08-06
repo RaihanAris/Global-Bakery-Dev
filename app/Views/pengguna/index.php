@@ -57,7 +57,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table class="table table-bordered">
+                                <table id="divisi" class="table table-bordered table-hover">
                                     <thead style="font-size: 18px;">
                                         <tr>
                                             <th style="width: 10px">No</th>

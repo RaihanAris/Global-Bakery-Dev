@@ -23,22 +23,17 @@
                                 <p><?= $name ?></p>
                                 <p class="text-bold mb-0">Email</p>
                                 <p><?= $email ?></p>
-                                <p class="text-bold mb-0">No. Telepon</p>
-                                <p>089213123123</p>
                                 <p class="text-bold mb-0">Jenis Kelamin</p>
+                                <?php
+                                if ($sex == "male") {
+                                    $sex = "Laki - laki";
+                                } elseif ($sex == "female") {
+                                    $sex = "Perempuan";
+                                }
+                                ?>
                                 <p><?= $sex ?></p>
                                 <p class="text-bold mb-0">Tanggal Lahir</p>
                                 <p><?= $birth ?></p>
-                                <p class="text-bold mb-0">Alamat</p>
-                                <p>Jl. Mawar Putih No.1 Jati Asih, Bekasi Selatan</p>
-                                <p class="text-bold mb-0">Jumlah Divisi</p>
-                                <p>2</p>
-                                <p class="text-bold mb-0">Jumlah Posisi</p>
-                                <p>2</p>
-                                <p class="text-bold mb-0">Jumlah Aktivitas</p>
-                                <p>21231</p>
-                                <p class="text-bold mb-0">Jumlah Projek</p>
-                                <p>10</p>
                                 <p class="text-bold mb-0">Keamanan</p>
                                 <a href="<?php echo (base_url()) ?>profile/ganti-password">Ganti Password</a>
                             </div>

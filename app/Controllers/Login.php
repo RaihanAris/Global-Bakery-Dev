@@ -81,12 +81,12 @@ class Login extends BaseController
 
             $responseData = json_decode($response, true);
 
+
             if (isset($responseData['data'])) {
                 $profileData = $responseData['data'];
             } else {
                 $profileData = [];
             }
-
             $isAdmin = false;
             foreach ($decode->role as $role) {
                 if ($role->role === 'administrator') {
@@ -103,6 +103,7 @@ class Login extends BaseController
                         'userEmail' => $profileData['email'],
                         'userSex' => $profileData['sex'],
                         'userBirth' => $profileData['birthday'],
+                        'userPic' => $profileData['picture'],
                     ]);
                     return redirect()->to('/dashboard');
                     break;
