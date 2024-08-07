@@ -9,26 +9,22 @@
             <div class="row">
                 <div class="col">
                     <div class="col-12">
-                        <div class="card" style="border-top: 5px solid yellow;">
-                            <div class="mx-4 mt-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
-                                <h1 class="text-bold">History Rencana Harian</h1>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body ">
-                                <a href="<?php echo (base_url()) ?>rencana/history" class="btn btn-warning align-items-center d-flex justify-content-center">
-                                    <i class="nav-icon fas fa-eye fa-xs pr-2"></i>
-                                    Lihat History Rencana
-                                </a>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
                         <!-- /.card -->
                         <div class="card" style="border-top: 5px solid yellow;">
-                            <div class="mx-4 mt-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
+                            <div class="mx-4 mt-3 pb-3 border-bottom">
                                 <h1 class="text-bold">Rencana Harian, 28-06-2024</h1>
                             </div>
                             <!-- /.card-header -->
+
                             <div class="card-body">
+                                <div class="d-flex align-items-center pb-3 gap-2">
+                                    <label for="datePicker" class="form-label m-0">Pilih Tanggal :</label>
+                                    <input type="date" name="datePlan" class="form-control w-auto" id="datePicker" />
+                                    <button type="submit" class="btn btn-success align-items-center d-flex">
+                                        <i class="nav-icon fas fa-search fa-xs pr-2"></i>Cari
+                                    </button>
+                                </div>
+
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>

@@ -158,6 +158,7 @@ class Dashboard extends BaseController
 
         $responseData = json_decode($response, true);
 
+        // dd($responseData);
         return ($responseData['data']);
     }
     public function get_plan_category()

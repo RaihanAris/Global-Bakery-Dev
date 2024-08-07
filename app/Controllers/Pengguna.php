@@ -658,6 +658,36 @@ class Pengguna extends BaseController
             session()->setFlashdata('successUpdate', $responseData['message']);
         }
     }
+    public function update_user_picture($foto)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/file/upload',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                'file' => $foto
+            )),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $responseData = json_decode($response, true);
+
+        dd($responseData, "123");
+    }
     public function save_update_pengguna($id): \CodeIgniter\HTTP\RedirectResponse
     {
         $role_user = $this->get_detail_pengguna($id);
@@ -666,12 +696,18 @@ class Pengguna extends BaseController
         $email = $this->request->getPost('emailPengguna');
         $sex = $this->request->getPost('sexPengguna');
         $birth = $this->request->getPost('birthPengguna');
-        $foto = $this->request->getPost('fotoPengguna');
-        // dd($id);
+        $foto = $this->request->getFile('fotoPengguna');
+
         // Ambil roles dan divisions dari form
         $roles = $this->request->getPost('roles');
         $divisions = $this->request->getPost('divisions');
 
+        // Masukkan Ke API update_user_picture
+        if ($foto->getName() != null) {
+            $this->update_user_picture($foto->getTempName());
+        }
+
+        // Masukkan ke API Update user
         $curl = curl_init();
 
         curl_setopt_array($curl, array(

@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col">
                     <div class="col-12">
-                        <form action="<?php echo (base_url()) ?>pengguna/update/<?= $idmembers ?>" method="post">
+                        <form action="<?php echo (base_url()) ?>pengguna/update/<?= $idmembers ?>" method="post" enctype="multipart/form-data">
                             <div class="card" style="border-top: 5px solid yellow;">
                                 <div class="mx-4 mt-3 pb-3 border-bottom d-flex justify-content-between align-items-center">
                                     <h1 class="text-bold">Update Pengguna</h1>
@@ -39,7 +39,7 @@
 
                                     <div class="mb-3">
                                         <label for="inputPicture" class="form-label">Foto</label>
-                                        <input type="file" name="fotoPengguna" class="form-control" id="inputPicture" value="<?= $details['picture'] ?>" />
+                                        <input type="file" name="fotoPengguna" class="form-control" id="inputPicture" />
                                     </div>
                                 </div>
                             </div>
