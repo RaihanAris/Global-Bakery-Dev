@@ -22,7 +22,7 @@ class Rencana extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/list?offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'user/list?offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -54,7 +54,7 @@ class Rencana extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/detail/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'user/detail/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -80,7 +80,7 @@ class Rencana extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/all?limit=20&offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'plan/list/?limit=20&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -106,7 +106,7 @@ class Rencana extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/category/list?limit=10&offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'activity/category/list?limit=10&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -133,7 +133,7 @@ class Rencana extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/list?limit=10&offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'activity/list?limit=10&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

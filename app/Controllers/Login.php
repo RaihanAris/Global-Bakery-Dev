@@ -29,7 +29,7 @@ class Login extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/auth/login',
+            CURLOPT_URL => getenv('API_URL') . 'auth/login',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -55,13 +55,12 @@ class Login extends BaseController
 
         if (isset($responseData['token'])) {
             $token = $responseData['token'];
-
-            $decode = JWT::decode($token, new Key('f4dIvVKDEuox03miVMr3us42lNCoA3XXg8xqFoEMTEFzVlWOMSbmGApyRXtN5x0B', 'HS256'));
+            $decode = JWT::decode($token, new Key(getenv('SECRET_KEY'), 'HS256'));
 
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/profile',
+                CURLOPT_URL => getenv('API_URL') . 'user/profile',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -111,19 +110,57 @@ class Login extends BaseController
             }
 
             if (!$isAdmin) {
-                return redirect()->back()->with('error', 'Gagal Login, Anda Tidak Memiliki Akses.');
+                return redirect()->back()->with('error_login', 'Gagal Login, Anda Tidak Memiliki Akses.');
             }
         } else {
-            return redirect()->back()->with('error', 'Gagal Login, Silahkan Coba Lagi.');
+            return redirect()->back()->with('error_login', 'Gagal Login, Silahkan Coba Lagi.');
         }
+    }
+    public function forgot_password($email)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => getenv('API_URL') . 'auth/reset-password/request',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                'email' => $email
+            )),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+        return ($responseData);
     }
 
     public function forgot()
     {
         return view('login/forgot');
     }
+
     public function resetPass()
     {
-        return view('login/resetPass');
+        $email = $this->request->getPost('emailAdmin');
+        $sendEmail = $this->forgot_password($email);
+
+        if ($sendEmail['status'] === false) {
+            return redirect()->back()->with('error', $sendEmail['message']);
+        } else {
+            return redirect()->to('/')->with('success', $sendEmail['message'] . ", Check your email!");
+        }
     }
 }

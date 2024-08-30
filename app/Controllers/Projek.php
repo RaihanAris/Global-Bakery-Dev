@@ -23,7 +23,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/list?offset=0',
+            CURLOPT_URL => getenv('API_URL').'user/list?offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -33,9 +33,7 @@ class Projek extends BaseController
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -55,7 +53,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/all?limit=10&offset=0',
+            CURLOPT_URL => getenv('API_URL').'plan/list/all?limit=10&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -65,9 +63,7 @@ class Projek extends BaseController
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -99,7 +95,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/detail/' . $id,
+            CURLOPT_URL => getenv('API_URL').'plan/detail/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -109,9 +105,7 @@ class Projek extends BaseController
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -170,7 +164,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/create',
+            CURLOPT_URL => getenv('API_URL').'plan/create',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -187,9 +181,7 @@ class Projek extends BaseController
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -215,7 +207,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/update/' . $id,
+            CURLOPT_URL => getenv('API_URL').'plan/update/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -233,9 +225,7 @@ class Projek extends BaseController
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -256,7 +246,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/list?limit=10&offset=0&search=',
+            CURLOPT_URL => getenv('API_URL').'division/list?limit=10&offset=0&search=',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -266,9 +256,7 @@ class Projek extends BaseController
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -282,7 +270,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/user?limit=10&offset=0&divisionId=' . $id,
+            CURLOPT_URL => getenv('API_URL').'division/user?limit=10&offset=0&divisionId=' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -292,9 +280,7 @@ class Projek extends BaseController
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -359,7 +345,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/assignDivision',
+            CURLOPT_URL => getenv('API_URL').'plan/assignDivision',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -374,9 +360,7 @@ class Projek extends BaseController
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);
@@ -395,7 +379,7 @@ class Projek extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/assignUser',
+            CURLOPT_URL => getenv('API_URL').'plan/assignUser',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -410,9 +394,7 @@ class Projek extends BaseController
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Authorization: Bearer ' . $this->token
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);

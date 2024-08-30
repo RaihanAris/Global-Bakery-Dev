@@ -6,23 +6,30 @@ use App\Models\Posisi;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RedirectResponse;
 use SebastianBergmann\Type\TrueType;
+use App\Models\UserModel;
+use App\Models\DivisiModel;
+use DateTime;
 
 class Pengguna extends BaseController
 {
     protected $role;
     protected $token;
     protected $members;
+    protected $userModel;
+    protected $divisiModel;
 
     public function __construct()
     {
         // Set Token
         $this->role = session()->get('userRole');
         $this->token = session()->get('userToken');
+        $this->userModel = new UserModel();
+        $this->divisiModel = new DivisiModel();
     }
     public function index(): string
     {
-        $pengguna_list = $this->get_pengguna_list();
-        $divisi_list = $this->get_divisi_list();
+        $pengguna_list = $this->userModel->where("deleted_at", null)->paginate(10, 'pengguna');
+        $divisi_list = $this->divisiModel->where("deleted_at", null)->paginate(10, 'divisi');
         $posisi_list = $this->get_posisi_list();
 
         foreach ($pengguna_list as &$pengguna) {
@@ -36,11 +43,17 @@ class Pengguna extends BaseController
             'menu' => 'pengguna',
             'role' => $this->role,
             'members' => $pengguna_list,
-            'divisions' => $divisi_list,
             'roles' => $posisi_list,
             'token' => $this->token,
+            'totalPengguna' => $this->userModel->where("deleted_at", null)->countAllResults(),
+            'divisiList' => $divisi_list,
+            'totalDivisi' => $this->divisiModel->where("deleted_at", null)->countAllResults(),
+            'currentPagePengguna' => $this->userModel->pager->getCurrentPage('pengguna'),
+            'currentPageDivisi' => $this->divisiModel->pager->getCurrentPage('divisi'),
+            'userPager' => $this->userModel->pager,
+            'divisiPager' => $this->divisiModel->pager,
         ];
-
+        // dd(count($data['members']));
         return view('pengguna/index', $data);
     }
     // POSISI
@@ -49,7 +62,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/role/list',
+            CURLOPT_URL => getenv('API_URL') . 'role/list',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -111,7 +124,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/list?limit=20&offset=0&search=',
+            CURLOPT_URL => getenv('API_URL') . 'division/list?limit=20&offset=0&search=',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -152,7 +165,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/create',
+            CURLOPT_URL => getenv('API_URL') . 'division/create',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -189,7 +202,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/user?limit=10&offset=0&divisionId=' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'division/user?limit=10&offset=0&divisionId=' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -255,7 +268,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/update/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'division/update/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -293,7 +306,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/division/delete/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'division/delete/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -329,7 +342,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/list?offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'user/list?offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -376,7 +389,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/create',
+            CURLOPT_URL => getenv('API_URL') . 'user/create',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -416,7 +429,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/detail/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'user/detail/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -442,7 +455,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/byUser?limit=20&offset=0&user=' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'plan/list/?limit=20&offset=0&user=' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -470,7 +483,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/list?limit=10&offset=0&planId=' . $PlanId,
+            CURLOPT_URL => getenv('API_URL') . 'activity/list?limit=10&offset=0&planId=' . $PlanId,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -497,7 +510,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/category/list?limit=10&offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'activity/category/list?limit=10&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -524,7 +537,35 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/evaluation/list?date=2024-07-31&user=' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'evaluation/summary/' . $id . '?days=30',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response, true);
+
+        return ($responseData['data']);
+    }
+    public function get_user_plan($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => getenv('API_URL') . 'history/detail?user=' . $id . '&start_date=2024-07-14&end_date=2024-08-14',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -541,59 +582,121 @@ class Pengguna extends BaseController
 
         $response = curl_exec($curl);
         curl_close($curl);
-
         $responseData = json_decode($response, true);
 
+        dd($responseData['data']['detail']);
+        return ($responseData['data']['detail']);
+    }
+    public function get_plan_detail($plan_id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => getenv('API_URL') . 'plan/detail/' . $plan_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $responseData = json_decode($response, true);
         return ($responseData['data']);
     }
     public function detail_pengguna($id): string
     {
         $userDetails = $this->get_detail_pengguna($id);
-        $userPlans = $this->get_plan_list($id);
+        $userPlans = $this->get_user_plan($id);
         $workHours = $this->get_plan_category();
         $dailyValues = $this->get_evaluation_user($id);
+
+        $planList = [];
+        $rencana = [];
+        $i = 0;
+        // Mendapatkan User Plan List
+        foreach ($userPlans as $plan) {
+            $detailPlan = $this->get_plan_detail($plan['planId']);
+            $rencana[] = $plan['planId'];
+            // Mengonversi created_at ke objek DateTime dan mendapatkan format tanggalnya
+            $date = new DateTime($detailPlan['created_at']);
+            $formattedCreatedDate = $date->format('Y-m-d');
+
+            foreach ($detailPlan['division'] as $planDivision) {
+                foreach ($planDivision['user'] as $planUser) {
+                    $details = [
+                        'id' => $detailPlan['id'],
+                        'created_at' => $formattedCreatedDate,
+                        'title' => $detailPlan['title'],
+                        'description' => $detailPlan['description'],
+                        'progress' => $detailPlan['progress'],
+                        'status' => $detailPlan['status'],
+                        'category' => $detailPlan['category'],
+                        'updated_at' => $detailPlan['updated_at'],
+                        'divisionName' => $planDivision['divisionName'],
+                        'userRole' => $planUser['userRole'],
+                    ];
+                }
+            }
+
+            // Memasukkan data Plan
+            // Menambahkan detail ke $planList dengan format kunci yang sesuai
+            $formattedDate = (new DateTime($detailPlan['created_at']))->format('Y-m-d');
+            if (!isset($planList[$formattedDate])) {
+                $planList[$formattedDate] = [];
+            }
+            $planList[$formattedDate][$i] = $details;
+
+            // Mendapatkan Activitynya
+            foreach ($plan['activity_detail'] as $activity) {
+                $activities = [
+                    'title' => $activity['title'],
+                    'description' => $activity['description'],
+                    'status' => $activity['status'],
+                    'planTitle' => $activity['planTitle'],
+                    'created_at' => $activity['created_at'],
+                    'updated_at' => $activity['updated_at'],
+                    'categoryId' => $activity['categoryId']
+                ];
+                // Memasukkan data Aktivitas
+                $planList[$formattedDate][$i]['activities'][] = $activities;
+            }
+            $i++;
+        }
+
+        // dd($planList);
+
+        $dailyValue = [];
+        $date = [];
+
+        // Mengambil data untuk Evaluasi user
         foreach ($dailyValues as $values) {
             $dailyValue[] = $values['value'];
-        }
-        // kosong apabila data null
-        if (empty($dailyValue)) {
-            $numberOfLabels = 6; // Misalnya, jika Anda memiliki 6 label
-            $dailyValue = array_fill(0, $numberOfLabels, 0);
+            $date[] = $values['date'];
         }
 
-        $plansByDate = [];
-        $userActivities = [];
-        foreach ($userPlans as $plan) {
-            // Mendapatkan hanya tanggal (tanpa waktu)
-            $createdAtDate = date('Y-m-d', strtotime($plan['created_at']));
-
-            // Jika tanggal belum ada di $plansByDate, inisialisasi array
-            if (!isset($plansByDate[$createdAtDate])) {
-                $plansByDate[$createdAtDate] = [];
-            }
-            $plansByDate[$createdAtDate][] = $plan;
-
-            // Masukkan Activity pada plan ke dalam array
-            $userActivity = $this->get_activity_list($plan['id']);
-            if ($userActivity != null) {
-                $userActivities = array_merge($userActivities, $userActivity);
-            }
-        }
-
-
-        // dd($userActivities);
         $data = [
             'title' => 'Detail Pengguna | Admin',
             'menu' => 'pengguna',
             'role' => $this->role,
             'details' => $userDetails,
+            'userPlans' => $userPlans,
             'idmembers' => $id,
-            'plansByDate' => $plansByDate,
-            'userActivities' => $userActivities,
             'workHours' => $workHours,
-            'dailyValues' => $dailyValue
+            'dailyValues' => $dailyValue,
+            'date' => $date,
+            'graphWidth' => count($dailyValue) * 100,
+            'planList' => $planList
         ];
-        // dd($plansByDate);
+        // dd($data['graphWidth']);
         return view('pengguna/detail_pengguna', $data);
     }
     public function update_pengguna($id): string
@@ -627,7 +730,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/createRole',
+            CURLOPT_URL => getenv('API_URL') . 'user/createRole',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -663,14 +766,14 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/file/upload',
+            CURLOPT_URL => getenv('API_URL') . '/upload',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode(array(
                 'file' => $foto
             )),
@@ -711,7 +814,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/update/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'user/update/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -770,7 +873,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/delete/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'user/delete/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -807,7 +910,7 @@ class Pengguna extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/deleteRole/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'user/deleteRole/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

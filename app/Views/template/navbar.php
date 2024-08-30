@@ -6,37 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><?= $title; ?></title>
 
+    <!-- Responsive Display -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/dist/css/responsive.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Select2 -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/select2/css/select2.min.css" />
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" />
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- Toastr -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/toastr/toastr.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/toastr/toastr.min.css" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/fontawesome-free/css/all.min.css" />
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
     <!-- DataTables -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" />
     <!-- JQVMap -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/jqvmap/jqvmap.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/jqvmap/jqvmap.min.css" />
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/dist/css/adminlte.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/dist/css/adminlte.min.css" />
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" />
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/daterangepicker/daterangepicker.css" />
     <!-- summernote -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/plugins/summernote/summernote-bs4.min.css" />
-    <!-- Responsive Display -->
-    <link rel="stylesheet" href="<?php echo (base_url()) ?>/adminlte/dist/css/responsive.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/summernote/summernote-bs4.min.css" />
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-navbar-fixed layout-fixed">
@@ -64,7 +65,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="<?php echo (base_url()) ?>/adminlte/dist/img/logo.png" alt="Hanasta Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
+                <img src="<?php echo base_url(); ?>assets/adminlte/dist/img/logo.png" alt="Hanasta Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
                 <span class="brand-text font-weight-light">Laporan Aktivitas</span>
             </a>
 
@@ -195,52 +196,50 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha384-7+JkRtbhsh3HfiIC42SAOikX7qerTxv5u8TL7bLym/Py6sTPKJHdG0lG+keCF2E8" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha384-ZbBKV4/YrxMzDs/5b2pZ1do+yooaAqPiT9xQ0HgyaFdjEkDpUAtk2A1U5yN06NfQ" crossorigin="anonymous"></script>
         <!-- jQuery -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/jquery/jquery.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/jquery/jquery.min.js"></script>
         <!-- jQuery UI 1.11.4 -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
         <!-- Select2 -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/select2/js/select2.full.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/select2/js/select2.full.min.js"></script>
         <!-- Bootstrap 4 -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- DataTables  & Plugins -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/jszip/jszip.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/jszip/jszip.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
         <!-- ChartJS -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/chart.js/Chart.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/chart.js/Chart.min.js"></script>
         <!-- SweetAlert2 -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
         <!-- Toastr -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/toastr/toastr.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/toastr/toastr.min.js"></script>
         <!-- AdminLTE App -->
-        <script src="<?php echo (base_url()) ?>/adminlte/dist/js/adminlte.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/dist/js/adminlte.js"></script>
         <!-- Sparkline -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/sparklines/sparkline.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/sparklines/sparkline.js"></script>
         <!-- JQVMap -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
         <!-- jQuery Knob Chart -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
         <!-- daterangepicker -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/moment/moment.min.js"></script>
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/moment/moment.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
         <!-- Tempusdominus Bootstrap 4 -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
         <!-- Summernote -->
-        <script src="<?php echo (base_url()) ?>/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="<?php echo (base_url()) ?>/adminlte/dist/js/demo.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="<?php echo (base_url()) ?>/adminlte/dist/js/pages/dashboard.js"></script>
+        <script src="<?php echo base_url(); ?>assets/adminlte/dist/js/pages/dashboard.js"></script>
         <!-- Page specific script -->
         <script>
             $(function() {
@@ -287,14 +286,15 @@
             $(function() {
                 // Data dari PHP
                 var dailyValues = <?= json_encode(isset($dailyValues) ? $dailyValues : []) ?>;
+                var date = <?= json_encode(isset($date) ? $date : []) ?>;
 
                 // Ubah nilai string menjadi integer
-                var data = dailyValues.map(function(value) {
+                var dataValues = dailyValues.map(function(value) {
                     return parseInt(value, 10);
                 });
 
                 // Tentukan label (tanggal) untuk data tersebut
-                var labels = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'];
+                var labels = date;
 
                 // Sales Graph Data
                 var salesData = {
@@ -302,7 +302,7 @@
                     datasets: [{
                         backgroundColor: 'transparent',
                         borderColor: 'rgb(0,0,0)',
-                        data: data
+                        data: dataValues
                     }]
                 };
 
@@ -317,7 +317,7 @@
                         xAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Days', // Label for X-axis
+                                labelString: 'Hari', // Label for X-axis
                                 fontColor: 'rgb(0,0,0)'
                             },
                             gridLines: {
@@ -342,7 +342,14 @@
                                 fontColor: 'rgb(0,0,0)',
                                 max: 3,
                                 min: 1,
-                                stepSize: 1
+                                stepSize: 1,
+                                callback: function(value, index, values) {
+                                    // Mengubah nilai numerik menjadi A, B, C
+                                    if (value === 1) return 'C';
+                                    if (value === 2) return 'B';
+                                    if (value === 3) return 'A';
+                                    return value;
+                                }
                             }
                         }]
                     }
@@ -362,13 +369,27 @@
         <!-- GRAPH Aktivitas -->
         <script>
             $(function() {
+                var graphCount = <?= json_encode(isset($graphCount) ? $graphCount : []) ?>;
+                var graphDate = <?= json_encode(isset($graphDate) ? $graphDate : []) ?>;
+
+                // Ubah nilai string menjadi integer
+                var dataValues = graphCount.map(function(value) {
+                    return parseInt(value, 10);
+                });
+
+                // Tentukan label (tanggal) untuk data tersebut
+                var labels = graphDate;
+
+                console.log(dataValues);
+                console.log(labels);
+
                 // Sales Graph Data
                 var salesData = {
-                    labels: ['15 Januari', '16 Januari', '17 Januari', '18 Januari', '19 Januari'],
+                    labels: labels,
                     datasets: [{
                         backgroundColor: 'rgb(255,193,7)',
                         borderColor: 'rgb(243,235,222)',
-                        data: [10, 20, 30, 25, 40]
+                        data: dataValues
                     }]
                 };
 

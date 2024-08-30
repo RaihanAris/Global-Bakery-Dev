@@ -1,0 +1,53 @@
+@media (max-width: 767px) {
+  .card-body table {
+    width: 100%;
+    border-collapse: collapse; /* Menggabungkan border antar sel */
+  }
+
+  .card-body thead {
+    display: none; /* Sembunyikan header asli */
+  }
+
+  .card-body tbody {
+    display: block;
+  }
+
+  .card-body tr {
+    display: block;
+    border-bottom: 2px solid yellow; /* Border antar baris */
+  }
+
+  .card-body td {
+    display: block;
+    text-align: right;
+    align-items: center;
+    font-size: 14px;
+    padding: 8px;
+    padding-right: 15px;
+    padding-left: 35%;
+    position: relative; /* Mengatur posisi untuk pseudo-element */
+    justify-content: flex-end;
+  }
+
+  .card-body td.rencanaTabel {
+    margin-top: 30px;
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .card-body td:before {
+    content: attr(data-label); /* Mengambil label dari data-label */
+    font-weight: bold;
+    position: absolute;
+    left: 10px;
+    width: 50%; /* Lebar label */
+    text-align: left;
+  }
+
+  .card-body li {
+    font-size: 14px;
+  }
+  .card-body .progress-rencana {
+    margin-top: 30px;
+  }
+}

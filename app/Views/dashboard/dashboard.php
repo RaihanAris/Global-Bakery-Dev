@@ -148,6 +148,36 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <!-- Notes Rencana -->
+                    <div class="card card-info collapsed-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-info pr-2"></i>Catatan Untuk Kolom Rencana</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li><span class="badge text-bg-warning text-sm">Batu Rencana</span> = Kotak berwarna kuning di kolom rencana merupakan batu rencana yang akan di lakukan di hari tersebut.</li>
+                                <ul>
+                                    <li><span class="badge text-bg-primary text-sm">plan</span>/<span class="badge text-bg-warning text-sm">project</span> = Kotak berwarna biru di batu rencana merupakan status dari rencana tersebut, apakah itu rencana (pribadi) atau projek (bersama).</li>
+                                    <li><span class="badge text-bg-success text-sm">Selesai 100%</span>/<span class="badge text-bg-danger text-sm">Berjalan 50%</span> = Kotak berwarna merah di batu rencana merupakan progress dari rencana tersebut, apakah itu sudah selesai (complete) atau belum selesai (progress).</li>
+                                </ul>
+                                <li><span class="badge text-bg-info text-sm">Detail Aktivitas</span> = Kotak berwarna biru muda di kolom rencana merupakan aktivitas yang mewakili batu rencana di lakukan setiap 2 jam di hari tersebut.</li>
+                                <ul>
+                                    <li>List Aktivitas = Kotak berwarna putih di detail aktivitas merupakan list aktivitas yang mewakili batu rencana di lakukan setiap 2 jam di hari tersebut.</li>
+                                    <li><span class="badge text-bg-warning text-sm">Referensi Rencana</span> = Kotak berwarna kuning di list aktivitas merupakan referensi yang mewakili batu rencana di aktivitas tersebut.</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- End Notes Rencana -->
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -162,7 +192,7 @@
                             <?php foreach ($user_plan_list as $user_plans) : ?>
                                 <tr>
                                     <td data-label="No" class="align-middle"><?= $i++ ?></td>
-                                    <td data-label="Nama Pengguna" class="align-middle">
+                                    <td data-label="Nama" class="align-middle">
                                         <?= $user_plans['user_name'] ?>
                                         <br>
                                         <?php foreach ($user_plans['role'] as $role_division) : ?>
@@ -170,7 +200,7 @@
                                             <br>
                                         <?php endforeach; ?>
                                     </td>
-                                    <td data-label="Detail Rencana" class="align-middle">
+                                    <td data-label="Detail Rencana" class="rencanaTabel align-middle">
                                         <?php foreach ($user_plans['plans'] as $user_plan) : ?>
                                             <!-- card -->
                                             <div class="card bg-gradient-warning collapsed-card mb-1">

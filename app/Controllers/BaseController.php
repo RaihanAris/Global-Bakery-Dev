@@ -72,7 +72,7 @@ abstract class BaseController extends Controller
     }
     private function isTokenValid($token)
     {
-        $key = 'f4dIvVKDEuox03miVMr3us42lNCoA3XXg8xqFoEMTEFzVlWOMSbmGApyRXtN5x0B';
+        $key = getenv('SECRET_KEY');
         try {
             $decoded = JWT::decode($token, new Key($key, 'HS256'));
             // Token valid, lanjutkan dengan logika Anda

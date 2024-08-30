@@ -82,7 +82,7 @@ class Profile extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/auth/logout',
+            CURLOPT_URL => getenv('API_URL') . 'auth/logout',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -108,4 +108,6 @@ class Profile extends BaseController
             return redirect()->to('/profile');
         }
     }
+
+    public function change_pass($id) {}
 }

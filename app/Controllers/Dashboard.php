@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\UserModel;
 
 class Dashboard extends BaseController
 {
@@ -22,7 +23,7 @@ class Dashboard extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/list?offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'user/list?offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -54,7 +55,7 @@ class Dashboard extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/user/detail/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'user/detail/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -80,7 +81,7 @@ class Dashboard extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/list/all?limit=20&offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'plan/list/?limit=20&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -104,7 +105,7 @@ class Dashboard extends BaseController
         //         $list_project[] = $project;
         //     }
         // }
-
+        // dd($responseData);
         return ($responseData['data']);
     }
     public function jumlah_anggota()
@@ -138,7 +139,7 @@ class Dashboard extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/list?limit=10&offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'activity/list?limit=10&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -166,7 +167,7 @@ class Dashboard extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/activity/category/list?limit=10&offset=0',
+            CURLOPT_URL => getenv('API_URL') . 'activity/category/list?limit=10&offset=0',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -188,6 +189,32 @@ class Dashboard extends BaseController
 
         return ($responseData['data']);
     }
+    public function get_activity_graph()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => getenv('API_URL') . 'activity/summary/graph',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ));
+
+        $response = curl_exec($curl);
+        $responseData = json_decode($response, true);
+        curl_close($curl);
+
+        return ($responseData['data']);
+    }
 
     public function index()
     {
@@ -196,6 +223,16 @@ class Dashboard extends BaseController
         $anggota = $this->jumlah_anggota();
         $plan_category = $this->get_plan_category();
         $activity_list = $this->get_activity_list();
+        $activity_graph = $this->get_activity_graph();
+
+        // mengumpulkan data activity graph
+        $graphDate = [];
+        $graphCount = [];
+        foreach ($activity_graph as $graph_data) {
+            $graphDate[] = $graph_data['date'];
+            $graphCount[] = $graph_data['count'];
+        }
+        // dd($graphDate, $graphCount);
 
         $plans_by_user = [];
         $user_plan_list = [];
@@ -240,9 +277,10 @@ class Dashboard extends BaseController
             'project' => $project,
             'plan_category' => $plan_category,
             'activity_list' => $activity_list,
+            'graphCount' => $graphCount,
+            'graphDate' => $graphDate,
 
         ];
-        // dd($user_plan_list, $plan_category, $activity_list);
 
         return view('dashboard/dashboard', $data);
     }
@@ -255,7 +293,7 @@ class Dashboard extends BaseController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.hanasta.co.id/globalbakery2/plan/update/' . $id,
+            CURLOPT_URL => getenv('API_URL') . 'plan/update/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

@@ -10,6 +10,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Login::login');
 $routes->post('/dashboard', 'Login::authentication');
 $routes->get('/login/forgotPass', 'Login::forgot');
+$routes->post('/login/resetPass', 'Login::resetPass');
 $routes->get('/login/resetPass', 'Login::resetPass');
 
 // DASHBOARD

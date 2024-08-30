@@ -9,11 +9,16 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="http://localhost:8080/Global-Bakery-Dev/public/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="http://localhost:8080/Global-Bakery-Dev/public/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="http://localhost:8080/Global-Bakery-Dev/public/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/dist/css/adminlte.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/adminlte/plugins/toastr/toastr.min.css" />
+
 </head>
 
 <body class="hold-transition login-page">
@@ -23,10 +28,10 @@
                 <p class="h1"><b>Admin</b><br>Global Bakery</p>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Masukkan email untuk mengubah password anda.</p>
-                <form action="#" method="post">
+                <p class="login-box-msg">Masukkan email anda.</p>
+                <form action="<?php echo (base_url()) ?>login/resetPass" method="post">
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input type="email" class="form-control" placeholder="Email" name="emailAdmin">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -50,11 +55,36 @@
     <!-- /.login-box -->
 
     <!-- jQuery -->
-    <script src="http://localhost:8080/Global-Bakery-Dev/public/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/adminlte/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="http://localhost:8080/Global-Bakery-Dev/public/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="http://localhost:8080/Global-Bakery-Dev/public/adminlte/dist/js/adminlte.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/adminlte/dist/js/adminlte.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="<?php echo base_url(); ?>assets/adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="<?php echo base_url(); ?>assets/adminlte/plugins/toastr/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            <?php if (session()->getFlashdata('success')) : ?>
+                toastr.success(
+                    '<?= session()->getFlashdata('success') ?>'
+                );
+            <?php endif; ?>
+            <?php if (session()->getFlashdata('error')) : ?>
+                toastr.error(
+                    '<?= session()->getFlashdata('error') ?>'
+                );
+            <?php endif; ?>
+        });
+    </script>
 </body>
 
 </html>
